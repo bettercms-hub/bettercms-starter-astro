@@ -1,0 +1,33 @@
+---
+import Base from "../../layouts/Base.astro";
+import { listEntries, type CaseStudyFields } from "../../lib/content";
+
+const items = listEntries<CaseStudyFields>("case-study");
+---
+
+<Base title="Case Studies — Acme" description="How teams ship faster with Acme.">
+  <main class="container">
+    <header class="page-head">
+      <h1>Case Studies</h1>
+      <p>Real teams, real results.</p>
+    </header>
+    {items.length === 0 ? (
+      <p>No published case studies yet.</p>
+    ) : (
+      <div class="card-grid">
+        {items.map(({ slug, data }) => (
+          <article class="card">
+            <a href={`/case-studies/${slug}`}>
+              {data.coverImage?.url && <img class="thumb" src={data.coverImage.url} alt={data.coverImage.alt ?? ""} />}
+              <div class="body">
+                {data.result && <span class="eyebrow">{data.result}</span>}
+                <h3>{data.title}</h3>
+                {data.summary && <p>{data.summary}</p>}
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
+    )}
+  </main>
+</Base>

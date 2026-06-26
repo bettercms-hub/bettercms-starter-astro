@@ -1,0 +1,118 @@
+/* Marketing Starter (Astro) — the site owns the look. Styles the classes
+   <BcmsBlocks>/<BcmsForm> emit in Astro (bcms-text, bcms-btn, bcms-cols, bcms-form, …)
+   plus the blog/case-study chrome. One file, CSS variables for theming. */
+
+:root {
+  --bg: #ffffff;
+  --fg: #0f172a;
+  --muted: #64748b;
+  --muted-bg: #f8fafc;
+  --border: #e2e8f0;
+  --primary: #4f46e5;
+  --primary-fg: #ffffff;
+  --radius: 12px;
+  --maxw: 1100px;
+  --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: var(--font);
+  color: var(--fg);
+  background: var(--bg);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+img { max-width: 100%; height: auto; display: block; }
+
+.container { max-width: var(--maxw); margin: 0 auto; padding: 0 1.25rem; }
+
+/* ── Marketing page body (Home / About / Contact) ───────────────────────── */
+
+.page-body { padding: 3rem 1.25rem 4rem; max-width: var(--maxw); margin: 0 auto; }
+.page-body h1 { font-size: clamp(2rem, 5vw, 3.25rem); letter-spacing: -0.02em; line-height: 1.15; margin: 0 0 0.75rem; }
+.page-body h2 { font-size: clamp(1.5rem, 3.5vw, 2.25rem); letter-spacing: -0.02em; margin: 2rem 0 0.75rem; }
+.page-body h3 { font-size: 1.2rem; margin: 0 0 0.5rem; }
+.page-body img { border-radius: var(--radius); margin: 1.5rem 0; }
+.page-body figcaption { color: var(--muted); font-size: 0.875rem; text-align: center; margin-top: 0.5rem; }
+
+.bcms-text { margin: 0 0 1rem; }
+.bcms-text p { margin: 0 0 1rem; }
+.bcms-spacer { display: block; }
+
+.bcms-cols { margin: 2rem 0; }
+.bcms-col { min-width: 0; }
+
+.bcms-btn {
+  display: inline-block; padding: 0.7rem 1.4rem; border-radius: 999px; font-weight: 600;
+  text-decoration: none; transition: opacity 0.15s ease;
+}
+.bcms-btn:hover { text-decoration: none; opacity: 0.92; }
+.bcms-btn-primary { background: var(--primary); color: var(--primary-fg); }
+.bcms-btn-secondary { background: var(--muted-bg); color: var(--fg); border: 1px solid var(--border); }
+
+/* ── Form ───────────────────────────────────────────────────────────────── */
+
+.bcms-form { max-width: 540px; margin: 1.5rem 0 0; }
+.bcms-field { display: block; margin: 0 0 1rem; }
+.bcms-field label { font-weight: 600; font-size: 0.9rem; }
+.bcms-field input,
+.bcms-field textarea,
+.bcms-field select {
+  width: 100%; margin-top: 0.35rem; padding: 0.7rem 0.85rem;
+  border: 1px solid var(--border); border-radius: 10px; font: inherit; color: var(--fg); background: #fff;
+}
+.bcms-field input:focus,
+.bcms-field textarea:focus,
+.bcms-field select:focus { outline: 2px solid var(--primary); outline-offset: 1px; border-color: var(--primary); }
+.bcms-field textarea { min-height: 130px; resize: vertical; }
+.bcms-check { display: flex; align-items: flex-start; gap: 0.5rem; font-weight: 500; margin: 0 0 1rem; }
+.bcms-check input { width: auto; margin-top: 0.2rem; }
+.bcms-form button[type="submit"] {
+  background: var(--primary); color: var(--primary-fg); border: 0; cursor: pointer;
+  padding: 0.75rem 1.5rem; border-radius: 999px; font: inherit; font-weight: 600; width: 100%;
+}
+.bcms-form button[type="submit"]:disabled { opacity: 0.6; cursor: progress; }
+.bcms-form-msg { margin-top: 0.85rem; padding: 0.65rem 0.85rem; border-radius: 10px; font-size: 0.9rem; background: var(--muted-bg); }
+
+/* ── Site chrome (nav / footer) + blog/case routes ──────────────────────── */
+
+.site-nav {
+  display: flex; align-items: center; gap: 1.25rem;
+  max-width: var(--maxw); margin: 0 auto; padding: 1rem 1.25rem; border-bottom: 1px solid var(--border);
+}
+.site-nav .brand { font-weight: 700; color: var(--fg); }
+.site-nav .links { display: flex; gap: 1.25rem; margin-left: auto; align-items: center; }
+.site-nav .links a { color: var(--fg); font-weight: 500; }
+
+.site-footer { border-top: 1px solid var(--border); background: var(--muted-bg); margin-top: 4rem; }
+.site-footer p { max-width: var(--maxw); margin: 0 auto; padding: 2rem 1.25rem; color: var(--muted); font-size: 0.875rem; }
+
+.page-head { padding: 3rem 0 1rem; }
+.page-head h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); letter-spacing: -0.02em; margin: 0 0 0.5rem; }
+.page-head p { color: var(--muted); margin: 0; }
+
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; padding: 2rem 0 4rem; }
+.card {
+  border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: #fff;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+.card:hover { box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08); transform: translateY(-2px); }
+.card a { color: inherit; text-decoration: none; display: block; }
+.card .thumb { aspect-ratio: 16 / 9; object-fit: cover; width: 100%; }
+.card .body { padding: 1.1rem 1.2rem 1.4rem; }
+.card .eyebrow { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--primary); font-weight: 600; }
+.card h3 { margin: 0.35rem 0 0.5rem; font-size: 1.15rem; letter-spacing: -0.01em; }
+.card p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+
+.article { max-width: 720px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+.article .cover { border-radius: var(--radius); margin: 1.5rem 0; width: 100%; aspect-ratio: 16/9; object-fit: cover; }
+.article h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); letter-spacing: -0.02em; margin: 0 0 0.5rem; }
+.article .byline { color: var(--muted); margin: 0 0 1rem; }
+.article .prose { font-size: 1.05rem; }
+.article .prose h2 { margin-top: 2rem; font-size: 1.4rem; }
+.back-link { display: inline-block; margin-bottom: 1rem; color: var(--muted); font-size: 0.9rem; }

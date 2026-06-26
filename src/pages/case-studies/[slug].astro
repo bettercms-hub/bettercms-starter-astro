@@ -1,0 +1,26 @@
+---
+import Base from "../../layouts/Base.astro";
+import { listEntries, getEntry, type CaseStudyFields } from "../../lib/content";
+
+export function getStaticPaths() {
+  return listEntries<CaseStudyFields>("case-study").map((e) => ({ params: { slug: e.slug } }));
+}
+
+const { slug } = Astro.params;
+const cs = getEntry<CaseStudyFields>("case-study", slug!);
+if (!cs) throw new Error(`case study not found: ${slug}`);
+
+const f = cs.data;
+const byline = [f.client, f.result].filter(Boolean).join(" · ");
+---
+
+<Base title={f.title} description={f.summary}>
+  <article class="article">
+    <a class="back-link" href="/case-studies">← Back to case studies</a>
+    <h1>{f.title}</h1>
+    {byline && <p class="byline">{byline}</p>}
+    {f.coverImage?.url && <img class="cover" src={f.coverImage.url} alt={f.coverImage.alt ?? ""} />}
+    {f.summary && <p class="prose"><em>{f.summary}</em></p>}
+    {f.body?.html && <div class="prose" set:html={f.body.html} />}
+  </article>
+</Base>

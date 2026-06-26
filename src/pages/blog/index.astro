@@ -1,0 +1,33 @@
+---
+import Base from "../../layouts/Base.astro";
+import { listEntries, type BlogPostFields } from "../../lib/content";
+
+const items = listEntries<BlogPostFields>("blog-post");
+---
+
+<Base title="Blog — Acme" description="Articles and updates from the Acme team.">
+  <main class="container">
+    <header class="page-head">
+      <h1>Blog</h1>
+      <p>Ideas on shipping faster with structured content.</p>
+    </header>
+    {items.length === 0 ? (
+      <p>No published posts yet.</p>
+    ) : (
+      <div class="card-grid">
+        {items.map(({ slug, data }) => (
+          <article class="card">
+            <a href={`/blog/${slug}`}>
+              {data.coverImage?.url && <img class="thumb" src={data.coverImage.url} alt={data.coverImage.alt ?? ""} />}
+              <div class="body">
+                {data.publishedDate && <span class="eyebrow">{data.publishedDate}</span>}
+                <h3>{data.title}</h3>
+                {data.excerpt && <p>{data.excerpt}</p>}
+              </div>
+            </a>
+          </article>
+        ))}
+      </div>
+    )}
+  </main>
+</Base>

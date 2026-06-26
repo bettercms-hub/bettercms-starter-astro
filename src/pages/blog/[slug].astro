@@ -1,0 +1,29 @@
+---
+import Base from "../../layouts/Base.astro";
+import { listEntries, getEntry, authorData, type BlogPostFields } from "../../lib/content";
+
+export function getStaticPaths() {
+  return listEntries<BlogPostFields>("blog-post").map((e) => ({ params: { slug: e.slug } }));
+}
+
+const { slug } = Astro.params;
+const post = getEntry<BlogPostFields>("blog-post", slug!);
+if (!post) throw new Error(`blog post not found: ${slug}`);
+
+const f = post.data;
+const author = authorData(f.author);
+const byline = [
+  author ? `By ${author.name}${author.role ? `, ${author.role}` : ""}` : null,
+  f.publishedDate,
+].filter(Boolean).join(" · ");
+---
+
+<Base title={f.title} description={f.excerpt}>
+  <article class="article">
+    <a class="back-link" href="/blog">← Back to blog</a>
+    <h1>{f.title}</h1>
+    {byline && <p class="byline">{byline}</p>}
+    {f.coverImage?.url && <img class="cover" src={f.coverImage.url} alt={f.coverImage.alt ?? ""} />}
+    {f.body?.html && <div class="prose" set:html={f.body.html} />}
+  </article>
+</Base>

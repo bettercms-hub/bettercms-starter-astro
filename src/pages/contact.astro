@@ -1,0 +1,18 @@
+---
+import Base from "../layouts/Base.astro";
+import BcmsBlocks from "@betttercms/astro/components/BcmsBlocks.astro";
+import { getPage, getForms } from "../lib/content";
+
+const page = getPage("contact");
+const { items: forms, turnstileSiteKey } = getForms();
+---
+
+<Base title={page?.metaTitle ?? "Contact Acme"} description={page?.metaDescription}>
+  <main class="page-body">
+    {page ? (
+      <BcmsBlocks blocks={page.blocks} forms={forms} turnstileSiteKey={turnstileSiteKey} />
+    ) : (
+      <p>This page hasn’t been published yet.</p>
+    )}
+  </main>
+</Base>
