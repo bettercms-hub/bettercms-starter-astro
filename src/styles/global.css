@@ -1,18 +1,33 @@
 /* Marketing Starter (Astro) — the site owns the look. Styles the classes
    <BcmsBlocks>/<BcmsForm> emit in Astro (bcms-text, bcms-btn, bcms-cols, bcms-form, …)
-   plus the blog/case-study chrome. One file, CSS variables for theming. */
+   plus the blog/case-study chrome. One file, CSS variables for theming.
+
+   Bold modern refresh: display/body type pairing, layered surfaces + depth, a
+   gradient-mesh hero, sticky glassy nav, hover-zoom cards, and JS-free scroll
+   reveals (animation-timeline) that degrade to fully-visible content. */
 
 :root {
   --bg: #ffffff;
-  --fg: #0f172a;
-  --muted: #64748b;
-  --muted-bg: #f8fafc;
-  --border: #e2e8f0;
+  --bg-soft: #f6f7fb;
+  --surface: #ffffff;
+  --fg: #0b1020;
+  --muted: #5b6478;
+  --border: #e7e9f2;
   --primary: #4f46e5;
+  --primary-2: #7c3aed;
+  --accent: #06b6d4;
   --primary-fg: #ffffff;
-  --radius: 12px;
-  --maxw: 1100px;
-  --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --grad: linear-gradient(120deg, var(--primary), var(--primary-2));
+  --ring: 0 0 0 3px rgba(79, 70, 229, 0.35);
+  --shadow-sm: 0 1px 2px rgba(11, 16, 32, 0.06), 0 1px 3px rgba(11, 16, 32, 0.04);
+  --shadow-md: 0 10px 30px rgba(11, 16, 32, 0.08);
+  --shadow-lg: 0 24px 60px rgba(11, 16, 32, 0.14);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --maxw: 1140px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --font: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-display: "Space Grotesk", var(--font);
 }
 
 * { box-sizing: border-box; }
@@ -22,97 +37,154 @@ body {
   font-family: var(--font);
   color: var(--fg);
   background: var(--bg);
-  line-height: 1.6;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 a { color: var(--primary); text-decoration: none; }
 a:hover { text-decoration: underline; }
 img { max-width: 100%; height: auto; display: block; }
+:focus-visible { outline: none; box-shadow: var(--ring); border-radius: 6px; }
 
 .container { max-width: var(--maxw); margin: 0 auto; padding: 0 1.25rem; }
 
 /* ── Marketing page body (Home / About / Contact) ───────────────────────── */
 
-.page-body { padding: 3rem 1.25rem 4rem; max-width: var(--maxw); margin: 0 auto; }
-.page-body h1 { font-size: clamp(2rem, 5vw, 3.25rem); letter-spacing: -0.02em; line-height: 1.15; margin: 0 0 0.75rem; }
-.page-body h2 { font-size: clamp(1.5rem, 3.5vw, 2.25rem); letter-spacing: -0.02em; margin: 2rem 0 0.75rem; }
-.page-body h3 { font-size: 1.2rem; margin: 0 0 0.5rem; }
-.page-body img { border-radius: var(--radius); margin: 1.5rem 0; }
-.page-body figcaption { color: var(--muted); font-size: 0.875rem; text-align: center; margin-top: 0.5rem; }
+.page-body {
+  padding: 4rem 1.25rem 4rem; max-width: var(--maxw); margin: 0 auto;
+  /* Gradient-mesh hero wash behind the top of the page, fading out. */
+  background:
+    radial-gradient(50% 340px at 8% 0%, rgba(124, 58, 237, 0.13), transparent 70%),
+    radial-gradient(45% 300px at 100% 0%, rgba(6, 182, 212, 0.12), transparent 70%);
+  background-repeat: no-repeat;
+}
+.page-body h1 { font-family: var(--font-display); font-size: clamp(2.4rem, 6vw, 4rem); font-weight: 600; letter-spacing: -0.025em; line-height: 1.1; margin: 0 0 0.85rem; }
+.page-body h2 { font-family: var(--font-display); font-size: clamp(1.7rem, 4vw, 2.6rem); font-weight: 600; letter-spacing: -0.025em; margin: 2.5rem 0 0.85rem; }
+.page-body h3 { font-family: var(--font-display); font-size: 1.35rem; margin: 0 0 0.5rem; }
+.page-body img { border-radius: var(--radius); margin: 1.75rem 0; box-shadow: var(--shadow-md); }
+.page-body figcaption { color: var(--muted); font-size: 0.875rem; text-align: center; margin-top: 0.6rem; }
 
-.bcms-text { margin: 0 0 1rem; }
+.bcms-text { margin: 0 0 1rem; color: var(--muted); font-size: 1.05rem; }
 .bcms-text p { margin: 0 0 1rem; }
 .bcms-spacer { display: block; }
 
-.bcms-cols { margin: 2rem 0; }
+.bcms-cols { margin: 2.5rem 0; }
 .bcms-col { min-width: 0; }
 
 .bcms-btn {
-  display: inline-block; padding: 0.7rem 1.4rem; border-radius: 999px; font-weight: 600;
-  text-decoration: none; transition: opacity 0.15s ease;
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.8rem 1.6rem; border-radius: 999px; font-weight: 600;
+  text-decoration: none; transition: transform 0.18s var(--ease), box-shadow 0.18s var(--ease);
 }
-.bcms-btn:hover { text-decoration: none; opacity: 0.92; }
-.bcms-btn-primary { background: var(--primary); color: var(--primary-fg); }
-.bcms-btn-secondary { background: var(--muted-bg); color: var(--fg); border: 1px solid var(--border); }
+.bcms-btn:hover { text-decoration: none; transform: translateY(-2px); }
+.bcms-btn:active { transform: translateY(0); }
+.bcms-btn-primary { background: var(--grad); color: var(--primary-fg); box-shadow: 0 8px 22px rgba(79, 70, 229, 0.32); }
+.bcms-btn-primary:hover { box-shadow: 0 14px 30px rgba(79, 70, 229, 0.40); }
+.bcms-btn-secondary { background: var(--surface); color: var(--fg); border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
 
 /* ── Form ───────────────────────────────────────────────────────────────── */
 
-.bcms-form { max-width: 540px; margin: 1.5rem 0 0; }
-.bcms-field { display: block; margin: 0 0 1rem; }
+.bcms-form { max-width: 560px; margin: 1.75rem 0 0; padding: 2rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-md); }
+.bcms-field { display: block; margin: 0 0 1.1rem; }
 .bcms-field label { font-weight: 600; font-size: 0.9rem; }
 .bcms-field input,
 .bcms-field textarea,
 .bcms-field select {
-  width: 100%; margin-top: 0.35rem; padding: 0.7rem 0.85rem;
-  border: 1px solid var(--border); border-radius: 10px; font: inherit; color: var(--fg); background: #fff;
+  width: 100%; margin-top: 0.4rem; padding: 0.75rem 0.9rem;
+  border: 1px solid var(--border); border-radius: var(--radius-sm); font: inherit; color: var(--fg); background: #fff;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 .bcms-field input:focus,
 .bcms-field textarea:focus,
-.bcms-field select:focus { outline: 2px solid var(--primary); outline-offset: 1px; border-color: var(--primary); }
-.bcms-field textarea { min-height: 130px; resize: vertical; }
+.bcms-field select:focus { outline: none; border-color: var(--primary); box-shadow: var(--ring); }
+.bcms-field textarea { min-height: 140px; resize: vertical; }
 .bcms-check { display: flex; align-items: flex-start; gap: 0.5rem; font-weight: 500; margin: 0 0 1rem; }
 .bcms-check input { width: auto; margin-top: 0.2rem; }
 .bcms-form button[type="submit"] {
-  background: var(--primary); color: var(--primary-fg); border: 0; cursor: pointer;
-  padding: 0.75rem 1.5rem; border-radius: 999px; font: inherit; font-weight: 600; width: 100%;
+  background: var(--grad); color: var(--primary-fg); border: 0; cursor: pointer;
+  padding: 0.85rem 1.5rem; border-radius: 999px; font: inherit; font-weight: 600; width: 100%;
+  box-shadow: 0 8px 22px rgba(79, 70, 229, 0.32); transition: transform 0.18s var(--ease), box-shadow 0.18s var(--ease);
 }
-.bcms-form button[type="submit"]:disabled { opacity: 0.6; cursor: progress; }
-.bcms-form-msg { margin-top: 0.85rem; padding: 0.65rem 0.85rem; border-radius: 10px; font-size: 0.9rem; background: var(--muted-bg); }
+.bcms-form button[type="submit"]:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(79, 70, 229, 0.40); }
+.bcms-form button[type="submit"]:disabled { opacity: 0.6; cursor: progress; transform: none; }
+.bcms-form-msg { margin-top: 0.85rem; padding: 0.7rem 0.9rem; border-radius: var(--radius-sm); font-size: 0.9rem; background: var(--bg-soft); }
 
 /* ── Site chrome (nav / footer) + blog/case routes ──────────────────────── */
 
 .site-nav {
-  display: flex; align-items: center; gap: 1.25rem;
-  max-width: var(--maxw); margin: 0 auto; padding: 1rem 1.25rem; border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: center; gap: 1.5rem;
+  /* Full-bleed bar; content centered to the page width via fluid side padding. */
+  padding: 0.9rem max(1.25rem, calc((100% - var(--maxw)) / 2));
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: saturate(1.4) blur(12px);
+  -webkit-backdrop-filter: saturate(1.4) blur(12px);
+  border-bottom: 1px solid transparent;
 }
-.site-nav .brand { font-weight: 700; color: var(--fg); }
-.site-nav .links { display: flex; gap: 1.25rem; margin-left: auto; align-items: center; }
+.site-nav .brand { font-family: var(--font-display); font-weight: 600; color: var(--fg); font-size: 1.15rem; }
+.site-nav .links { display: flex; gap: 1.5rem; margin-left: auto; align-items: center; }
 .site-nav .links a { color: var(--fg); font-weight: 500; }
+.site-nav .links a:hover { color: var(--primary); text-decoration: none; }
 
-.site-footer { border-top: 1px solid var(--border); background: var(--muted-bg); margin-top: 4rem; }
-.site-footer p { max-width: var(--maxw); margin: 0 auto; padding: 2rem 1.25rem; color: var(--muted); font-size: 0.875rem; }
-
-.page-head { padding: 3rem 0 1rem; }
-.page-head h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); letter-spacing: -0.02em; margin: 0 0 0.5rem; }
-.page-head p { color: var(--muted); margin: 0; }
-
-.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; padding: 2rem 0 4rem; }
-.card {
-  border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: #fff;
-  transition: box-shadow 0.15s ease, transform 0.15s ease;
+@supports (animation-timeline: scroll()) {
+  .site-nav {
+    animation: nav-elevate linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 100px;
+  }
+  @keyframes nav-elevate {
+    to { background: rgba(255, 255, 255, 0.88); border-bottom-color: var(--border); box-shadow: var(--shadow-md); }
+  }
 }
-.card:hover { box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08); transform: translateY(-2px); }
+
+.site-footer { border-top: 1px solid var(--border); background: var(--bg-soft); margin-top: 5rem; }
+.site-footer p { max-width: var(--maxw); margin: 0 auto; padding: 2.5rem 1.25rem; color: var(--muted); font-size: 0.875rem; }
+
+.page-head { padding: 3.5rem 0 1rem; }
+.page-head h1 { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3rem); font-weight: 600; letter-spacing: -0.025em; margin: 0 0 0.5rem; }
+.page-head p { color: var(--muted); margin: 0; font-size: 1.05rem; }
+
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.75rem; padding: 2.5rem 0 4rem; }
+.card {
+  border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.25s var(--ease), transform 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+.card:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); border-color: rgba(79, 70, 229, 0.25); }
 .card a { color: inherit; text-decoration: none; display: block; }
-.card .thumb { aspect-ratio: 16 / 9; object-fit: cover; width: 100%; }
-.card .body { padding: 1.1rem 1.2rem 1.4rem; }
-.card .eyebrow { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--primary); font-weight: 600; }
-.card h3 { margin: 0.35rem 0 0.5rem; font-size: 1.15rem; letter-spacing: -0.01em; }
+.card .thumb { aspect-ratio: 16 / 9; object-fit: cover; width: 100%; transition: transform 0.4s var(--ease); }
+.card:hover .thumb { transform: scale(1.05); }
+.card .body { padding: 1.25rem 1.3rem 1.5rem; }
+.card .eyebrow {
+  font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700;
+  background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.card h3 { font-family: var(--font-display); margin: 0.4rem 0 0.5rem; font-size: 1.2rem; letter-spacing: -0.015em; }
 .card p { margin: 0; color: var(--muted); font-size: 0.95rem; }
 
-.article { max-width: 720px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
-.article .cover { border-radius: var(--radius); margin: 1.5rem 0; width: 100%; aspect-ratio: 16/9; object-fit: cover; }
-.article h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); letter-spacing: -0.02em; margin: 0 0 0.5rem; }
+.article { max-width: 740px; margin: 0 auto; padding: 3rem 1.25rem 4rem; }
+.article .cover { border-radius: var(--radius); margin: 1.75rem 0; width: 100%; aspect-ratio: 16/9; object-fit: cover; box-shadow: var(--shadow-md); }
+.article h1 { font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3rem); letter-spacing: -0.025em; margin: 0 0 0.5rem; line-height: 1.1; }
 .article .byline { color: var(--muted); margin: 0 0 1rem; }
-.article .prose { font-size: 1.05rem; }
-.article .prose h2 { margin-top: 2rem; font-size: 1.4rem; }
+.article .prose { font-size: 1.1rem; }
+.article .prose h2 { font-family: var(--font-display); margin-top: 2.25rem; font-size: 1.5rem; letter-spacing: -0.015em; }
 .back-link { display: inline-block; margin-bottom: 1rem; color: var(--muted); font-size: 0.9rem; }
+.back-link:hover { color: var(--primary); text-decoration: none; }
+
+/* ── Scroll reveal: JS-free, fades content up as it enters the viewport.
+   Behind @supports so unsupported browsers show everything immediately, and
+   disabled under reduced-motion. ponytail: CSS scroll-timeline, no JS observer —
+   immune to the soft-nav remount class of bugs entirely. ────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .card, .page-head, .bcms-cols, .page-body img, .article .cover {
+      animation: reveal-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 28%;
+    }
+    @keyframes reveal-up {
+      from { opacity: 0; transform: translateY(28px); }
+      to { opacity: 1; transform: none; }
+    }
+  }
+}
