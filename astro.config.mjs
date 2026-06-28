@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { defineConfig } from "astro/config";
+import tailwindcss from "@tailwindcss/vite";
 import bettercms from "@betttercms/astro";
 
 // Static site: BetterCMS hosting serves the build as files, and the deploy Action writes
@@ -16,6 +17,7 @@ const snapshotWorkspace = (() => {
 
 export default defineConfig({
   output: "static",
+  vite: { plugins: [tailwindcss()] },
   integrations: [
     bettercms({
       apiUrl: process.env.PUBLIC_BCMS_API_URL ?? "https://api.bettercms.ai",
