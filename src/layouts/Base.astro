@@ -26,13 +26,13 @@ const NAV = [
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
   </head>
   <body>
     <nav class="site-nav">
-      <a class="brand" href="/">Acme</a>
+      <a class="brand" href="/">Acme<span class="dot">.</span></a>
       <div class="links">
         {NAV.map((l) => <a href={l.href}>{l.label}</a>)}
         <a class="bcms-btn bcms-btn-primary" href="/contact">Contact</a>
@@ -40,7 +40,24 @@ const NAV = [
     </nav>
     <slot />
     <footer class="site-footer">
-      <p>© Acme, Inc. Built with BetterCMS.</p>
+      <div class="site-footer-cols">
+        <div class="site-footer-brand">
+          <a class="brand" href="/">Acme<span class="dot">.</span></a>
+          <p>Ship structured content faster. A marketing starter powered by BetterCMS.</p>
+        </div>
+        <div class="site-footer-col">
+          <h4>Explore</h4>
+          <ul>{NAV.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
+        </div>
+        <div class="site-footer-col">
+          <h4>Get started</h4>
+          <ul>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="https://bettercms.ai" target="_blank" rel="noreferrer">BetterCMS</a></li>
+          </ul>
+        </div>
+      </div>
+      <p class="site-footer-copy">© {new Date().getFullYear()} Acme, Inc. Built with BetterCMS.</p>
     </footer>
   </body>
 </html>
