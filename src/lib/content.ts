@@ -46,6 +46,23 @@ export const listEntries = <T>(model: string): SnapshotEntry<T>[] =>
 export const getEntry = <T>(model: string, slug: string): SnapshotEntry<T> | undefined =>
   listEntries<T>(model).find((e) => e.slug === slug);
 
+/** Singleton models (site/home/…) have exactly one entry — return its data. */
+export const getSingleton = <T>(model: string): T | undefined => listEntries<T>(model)[0]?.data;
+
+// ── Site globals (the `site` singleton: brand/nav/footer chrome, editable in the CMS) ──────────
+/** Repeatable/zoned-array fields arrive as `{ repeatable: [...] }` at delivery depth ≥ 1. */
+export type Repeatable<T> = { repeatable?: T[] };
+export type NavLink = { label: string; href: string };
+export type Social = { label: string; href: string };
+export type Site = {
+  brandName?: string;
+  navLinks?: Repeatable<NavLink>;
+  footerTagline?: string;
+  socials?: Repeatable<Social>;
+};
+/** Unwrap a repeatable field to a plain list. */
+export const items = <T>(field?: Repeatable<T>): T[] => (Array.isArray(field?.repeatable) ? field.repeatable : []);
+
 // Field shapes seeded by the Marketing Starter template.
 export type Image = { url: string; alt?: string };
 export type RichText = { html: string };
