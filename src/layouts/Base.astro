@@ -1,20 +1,28 @@
 ---
 /** Shared page shell: <head> meta + nav + footer. Marketing pages render their CMS block tree
- *  into the slot; blog/case routes render their own markup. Nav/footer are site chrome, not CMS
- *  content (mirrors the Next starter). */
+ *  into the slot; blog/case routes render their own markup. Nav/footer chrome (brand, links,
+ *  tagline) reads from the `site` global so it's editable in the CMS — falling back to the
+ *  starter defaults when the global is absent. */
 import "../styles/global.css";
+import { getSingleton, items, type Site } from "../lib/content";
 
 interface Props {
   title?: string;
   description?: string | null;
 }
-const { title = "Acme", description } = Astro.props;
-const NAV = [
-  { label: "Home", href: "/" },
-  { label: "Blog", href: "/blog" },
-  { label: "Case Studies", href: "/case-studies" },
-  { label: "About", href: "/about" },
-];
+const site = getSingleton<Site>("site");
+const brand = site?.brandName ?? "Acme";
+const { title = brand, description } = Astro.props;
+const NAV = items(site?.navLinks).length
+  ? items(site?.navLinks)
+  : [
+      { label: "Home", href: "/" },
+      { label: "Blog", href: "/blog" },
+      { label: "Case Studies", href: "/case-studies" },
+      { label: "About", href: "/about" },
+    ];
+const tagline =
+  site?.footerTagline ?? "Ship structured content faster. A marketing starter powered by BetterCMS.";
 ---
 
 <html lang="en">
@@ -32,7 +40,7 @@ const NAV = [
   </head>
   <body>
     <nav class="site-nav">
-      <a class="brand" href="/">Acme<span class="dot">.</span></a>
+      <a class="brand" href="/">{brand}<span class="dot">.</span></a>
       <div class="links">
         {NAV.map((l) => <a href={l.href}>{l.label}</a>)}
         <a class="bcms-btn bcms-btn-primary" href="/contact">Contact</a>
@@ -42,8 +50,8 @@ const NAV = [
     <footer class="site-footer">
       <div class="site-footer-cols">
         <div class="site-footer-brand">
-          <a class="brand" href="/">Acme<span class="dot">.</span></a>
-          <p>Ship structured content faster. A marketing starter powered by BetterCMS.</p>
+          <a class="brand" href="/">{brand}<span class="dot">.</span></a>
+          <p>{tagline}</p>
         </div>
         <div class="site-footer-col">
           <h4>Explore</h4>
@@ -57,7 +65,7 @@ const NAV = [
           </ul>
         </div>
       </div>
-      <p class="site-footer-copy">© {new Date().getFullYear()} Acme, Inc. Built with BetterCMS.</p>
+      <p class="site-footer-copy">© {new Date().getFullYear()} {brand}. Built with BetterCMS.</p>
     </footer>
   </body>
 </html>
