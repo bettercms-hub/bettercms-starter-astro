@@ -1,44 +1,47 @@
-/* Marketing Starter — styling built on Tailwind CSS v4. Design tokens live in
-   @theme (so they also generate utilities like bg-primary / text-ink / font-display
-   for the hand-written chrome), and the content styling targets the classes that
-   <BcmsBlocks>/<BcmsForm> emit. Those library elements (and the scroll/aurora/grain
-   effects) can't be expressed as utility classes on markup we don't own, so they're
-   authored in @layer components against the same theme tokens — the idiomatic v4
-   approach for third-party / effect-driven DOM.
-
-   One shared stylesheet for BOTH the Next and Astro variants: their renderers emit
-   slightly different class names (Next `bcms-block--*`/`bcms-button--*`; Astro bare
-   `h1/h2/h3`/`bcms-text`/`bcms-btn-*`/`bcms-form`), so selectors cover both. Marketing
-   page blocks are flat (Astro can't nest sections) so the hero lives on the page body.
-
-   Register: brand. Direction: bold conversion SaaS — committed electric-violet,
-   cyan + magenta depth, neutrals tinted to the brand hue (no #000/#fff). No gradient
-   text, no glass but the scrolled nav. */
+/* Hallmark · genre: modern-minimal · macrostructure: Marquee Hero · theme: Coral
+ * enrichment: none (typography only) · nav: N1b · footer: Ft7
+ * pre-emit critique: P5 H5 E4 S4 R5 V4
+ *
+ * Marketing Starter — the CALM one. The sibling `modern-aesthetic` template is the premium,
+ * animated, immersive site; this is the polished default: fast, quiet, rebrandable. The system
+ * is documented in design.md at the repo root — read that before changing tokens.
+ *
+ * Styling built on Tailwind CSS v4. Design tokens live in @theme (so they also generate
+ * utilities like bg-paper / text-ink / font-display for the hand-written chrome), and the
+ * content styling targets the classes <BcmsBlocks>/<BcmsForm> emit. Those library elements are
+ * markup we don't own, so they're authored in @layer components against the same tokens — the
+ * idiomatic v4 approach for third-party DOM.
+ *
+ * One shared stylesheet for BOTH the Next and Astro variants: their renderers emit slightly
+ * different class names (Next `bcms-block--*`/`bcms-button--*`; Astro bare `h1/h2/h3`/
+ * `bcms-text`/`bcms-btn-*`/`bcms-form`), so selectors cover both. Marketing page blocks are
+ * flat (the editor composes them; Astro can't nest sections), so the hero is the FIRST block
+ * on the page body — styled by position, not by a wrapper we can't emit. */
 
 @import "tailwindcss";
 
 @theme {
-  /* "Acid Pop": near-black ink on bright paper, electric LIME for fills (black text
-     on it), a readable lime-green for small text, electric blue + magenta feeding the
-     aurora. Loud and non-reflex. Tailwind --color-* names so utilities exist. */
-  --color-paper: oklch(0.98 0.006 110);
-  --color-paper-2: oklch(0.955 0.012 120);
-  --color-surface: oklch(0.995 0.004 110);
-  --color-ink: oklch(0.17 0.02 140);
-  --color-ink-2: oklch(0.26 0.025 140);
-  --color-muted: oklch(0.5 0.025 140);
-  --color-line: oklch(0.9 0.015 130);
-  --color-line-strong: oklch(0.82 0.02 130);
-  --color-primary: oklch(0.87 0.2 128);        /* electric lime — fills */
-  --color-primary-strong: oklch(0.81 0.21 128);/* deeper lime — hover fill */
-  --color-primary-soft: oklch(0.94 0.08 122);
-  --color-primary-fg: oklch(0.17 0.02 140);    /* ink text on lime */
-  --color-accent: oklch(0.5 0.15 142);         /* readable lime-green — small text/links */
-  --color-secondary: oklch(0.62 0.2 250);      /* electric blue */
-  --color-magenta: oklch(0.62 0.27 350);
+  /* Coral: warm-grey paper, warm charcoal ink, ONE coral accent. No #000/#fff — both read
+     as unset. Tailwind --color-* names so utilities exist. */
+  --color-paper: oklch(0.98 0.004 60);
+  --color-paper-2: oklch(0.958 0.006 55);
+  --color-surface: oklch(0.995 0.002 60);
+  --color-ink: oklch(0.22 0.012 45);
+  --color-ink-2: oklch(0.32 0.012 45);
+  --color-muted: oklch(0.53 0.012 45);
+  --color-line: oklch(0.905 0.006 55);
+  --color-line-strong: oklch(0.83 0.008 55);
 
-  --font-sans: "Hanken Grotesk", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --font-display: "Bricolage Grotesque", "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
+  /* The one accent. L=0.55 is deliberate: it clears 4.5:1 BOTH ways — coral text on paper,
+     and --color-primary-fg text on a coral fill. A lighter, prettier coral fails one of them. */
+  --color-primary: oklch(0.55 0.18 30);
+  --color-primary-strong: oklch(0.47 0.18 30);
+  --color-primary-soft: oklch(0.95 0.035 35);
+  --color-primary-fg: oklch(0.99 0.004 60);
+
+  --font-sans: Geist, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-display: Geist, ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
 
   --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -50,230 +53,319 @@
   --primary-strong: var(--color-primary-strong);
   --primary-soft: var(--color-primary-soft);
   --primary-fg: var(--color-primary-fg);
-  --accent: var(--color-accent);
+  --accent: var(--color-primary); /* one accent — links and fills are the same coral */
   --ink: var(--color-ink);
+  --ink-2: var(--color-ink-2);
   --muted: var(--color-muted);
   --paper: var(--color-paper);
   --paper-2: var(--color-paper-2);
   --surface: var(--color-surface);
   --line: var(--color-line);
   --line-strong: var(--color-line-strong);
+  --danger: oklch(0.52 0.19 25);
+  --success: oklch(0.45 0.12 160);
+  --success-soft: oklch(0.95 0.05 160);
+  --danger-soft: oklch(0.95 0.045 25);
 
-  --ring: 0 0 0 3px oklch(from var(--color-accent) l c h / 0.35);
-  --glow: 0 12px 34px -8px oklch(from var(--color-primary) calc(l - 0.05) c h / 0.55);
-  --glow-strong: 0 20px 46px -12px oklch(from var(--color-primary) calc(l - 0.05) c h / 0.7);
-  --shadow-sm: 0 1px 2px oklch(0.17 0.02 140 / 0.06), 0 2px 8px oklch(0.17 0.02 140 / 0.05);
-  --shadow-md: 0 14px 36px -14px oklch(0.17 0.02 140 / 0.18);
-  --shadow-lg: 0 30px 70px -28px oklch(0.17 0.02 140 / 0.26);
+  --ring: 0 0 0 3px oklch(from var(--color-primary) l c h / 0.32);
+  --shadow-sm: 0 1px 2px oklch(0.22 0.012 45 / 0.05);
+  --shadow-md: 0 10px 30px -14px oklch(0.22 0.012 45 / 0.16);
 
-  --radius: 18px;
-  --radius-sm: 11px;
-  --radius-lg: 28px;
-  --maxw: 1180px;
-  --maxw-prose: 720px;
+  --radius: 14px;
+  --radius-sm: 10px;
+  --radius-lg: 20px;
+  --radius-pill: 999px;
+  --maxw: 1120px;
+  --maxw-prose: 680px;
   --gutter: clamp(1.25rem, 0.8rem + 2vw, 2.25rem);
   --ease: var(--ease-out-quint);
-  --dur: 0.5s;
+  --dur: 0.22s;
+
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  --space-2xl: 4.5rem;
+  --space-3xl: 7rem;
 
   --step--1: clamp(0.8rem, 0.76rem + 0.18vw, 0.9rem);
-  --step-0: clamp(1rem, 0.95rem + 0.2vw, 1.12rem);
-  --step-1: clamp(1.28rem, 1.15rem + 0.5vw, 1.6rem);
-  --step-2: clamp(1.6rem, 1.35rem + 1vw, 2.3rem);
-  --step-3: clamp(2.1rem, 1.6rem + 2.2vw, 3.4rem);
-  --step-4: clamp(2.8rem, 1.9rem + 4.2vw, 5.2rem);
-  --step-5: clamp(3.3rem, 2rem + 6vw, 6.8rem);
+  --step-0: clamp(1rem, 0.95rem + 0.2vw, 1.1rem);
+  --step-1: clamp(1.2rem, 1.1rem + 0.4vw, 1.45rem);
+  --step-2: clamp(1.5rem, 1.3rem + 0.9vw, 2.1rem);
+  --step-3: clamp(1.9rem, 1.5rem + 1.9vw, 3rem);
+  --step-4: clamp(2.4rem, 1.8rem + 3vw, 4rem);
+  /* Hero. Ceiling 4.75rem per the genre's large-display bracket — the seeded H1 runs ~36
+     chars, which sits in --text-display's range. */
+  --step-5: clamp(2.7rem, 1.9rem + 4vw, 4.75rem);
 }
 
-@property --aurora-angle { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
-
 @layer base {
-  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  /* clip, never hidden — `hidden` on the root silently kills position:sticky. */
+  html, body { overflow-x: clip; }
+  html { -webkit-text-size-adjust: 100%; }
   body {
-    font-family: var(--font-sans); font-size: var(--step-0); color: var(--ink); background: var(--paper);
-    line-height: 1.6; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; overflow-x: clip;
-  }
-  /* Fine film grain over the whole page — depth without imagery. */
-  body::before {
-    content: ""; position: fixed; inset: 0; z-index: 1; pointer-events: none;
-    opacity: 0.035; mix-blend-mode: multiply;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    font-family: var(--font-sans); font-size: var(--step-0); color: var(--ink-2); background: var(--paper);
+    line-height: 1.6; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
   }
   a { color: var(--accent); text-decoration: none; }
   a:hover { text-decoration: underline; text-underline-offset: 3px; }
   img, svg, video { max-width: 100%; height: auto; display: block; }
+  /* Never animate the ring — it must show the instant focus lands. */
   :focus-visible { outline: none; box-shadow: var(--ring); border-radius: 6px; }
   ::selection { background: var(--primary-soft); }
+  /* Long words (a display headline, a URL) wrap instead of forcing a scrollbar at 320px. */
+  :is(h1, h2, h3) { overflow-wrap: anywhere; }
 }
 
 @layer components {
   .container { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gutter); }
 
+  /* Keyboard users land here first; visible only once focused. */
+  .skip-link {
+    position: absolute; left: var(--space-sm); top: -4rem; z-index: 100;
+    background: var(--surface); color: var(--ink); border: 1px solid var(--line-strong);
+    border-radius: var(--radius-sm); padding: var(--space-2xs) var(--space-sm); font-weight: 600;
+    transition: top var(--dur) var(--ease);
+  }
+  .skip-link:focus-visible { top: var(--space-sm); text-decoration: none; }
+
   /* ── Marketing page body (Home / About / Contact) ────────────────────────
-     The first block reads as the hero, on an animated aurora-mesh wash. */
-  .page-body { position: relative; padding: clamp(4.5rem, 3rem + 6vw, 8rem) 0 5rem; }
-  .page-body > div { position: relative; z-index: 1; max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gutter); }
-  .page-body::before, .page-body::after {
-    content: ""; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-    width: 100vw; height: min(86vh, 760px); z-index: 0; pointer-events: none;
+     Blocks arrive as a flat stream, so the hero is the FIRST run of blocks — styled by
+     position. Plain paper: the marquee is carried by type, not by a background effect. */
+  .page-body { padding: clamp(3.5rem, 2.5rem + 5vw, 6.5rem) 0 var(--space-2xl); }
+  .page-body > div { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--gutter); }
+  .page-body > div > * + * { margin-top: var(--space-md); }
+  .page-body :is(h1, h2, h3) {
+    font-family: var(--font-display); font-weight: 700; letter-spacing: -0.03em;
+    line-height: 1.05; text-wrap: balance; color: var(--ink);
   }
-  .page-body::before {
-    background:
-      radial-gradient(40% 55% at 14% 8%, oklch(from var(--color-primary) l c h / 0.32), transparent 60%),
-      radial-gradient(36% 52% at 88% 2%, oklch(from var(--color-secondary) l c h / 0.22), transparent 58%),
-      radial-gradient(46% 64% at 56% 92%, oklch(from var(--color-magenta) l c h / 0.16), transparent 62%);
-  }
-  .page-body::after {
-    height: min(70vh, 560px);
-    background: conic-gradient(from var(--aurora-angle) at 50% 38%,
-      oklch(from var(--color-primary) l c h / 0.2), oklch(from var(--color-secondary) l c h / 0.16),
-      oklch(from var(--color-magenta) l c h / 0.16), oklch(from var(--color-primary) l c h / 0.2));
-    filter: blur(72px); opacity: 0.9; animation: aurora-spin 24s linear infinite;
-  }
-
-  .page-body > div > * + * { margin-top: 1.35rem; }
-  .page-body :is(h1, h2, h3) { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.035em; line-height: 1.0; text-wrap: balance; }
-  .page-body :is(h2, h3) { margin-top: 3.25rem; }
-  .page-body h1 { font-size: var(--step-5); font-weight: 800; max-width: 16ch; }
+  .page-body :is(h2, h3) { margin-top: var(--space-3xl); }
+  .page-body h1 { font-size: var(--step-5); max-width: 15ch; }
   .page-body h2 { font-size: var(--step-3); max-width: 22ch; }
-  .page-body h3 { font-size: var(--step-1); }
-  .page-body :is(h1, h2, h3) + * { margin-top: 1.1rem; }
+  .page-body h3 { font-size: var(--step-1); font-weight: 600; letter-spacing: -0.02em; }
+  .page-body :is(h1, h2, h3) + * { margin-top: var(--space-sm); }
+  /* A lede sits close to its heading; a grid of cells needs air, or the section head reads as
+     glued to the first cell's h3. Beats `.bcms-cols`'s own margin on specificity, so it has to
+     be stated here rather than there. */
+  .page-body :is(h1, h2, h3) + :is(.bcms-block--columns, .bcms-cols) { margin-top: var(--space-lg); }
+  /* A column's own h3 starts its cell — the section-level top margin would strand it 112px
+     down. Descendant, not child: the renderer wraps each column's blocks in a bare <div>, so
+     `.bcms-col > h3` never matches. Both renderers nest differently; this covers both. */
+  .page-body :is(.bcms-column, .bcms-col) :is(h2, h3):first-child { margin-top: 0; }
 
-  .bcms-block--text, .bcms-text { color: var(--muted); font-size: var(--step-1); line-height: 1.5; max-width: 60ch; font-weight: 380; }
-  .bcms-block--text p, .bcms-text p { margin: 0 0 1rem; }
+  .bcms-block--text, .bcms-text { color: var(--muted); font-size: var(--step-1); line-height: 1.55; max-width: 58ch; }
+  .bcms-block--text p, .bcms-text p { margin: 0 0 var(--space-sm); }
   .bcms-block--text p:last-child, .bcms-text p:last-child { margin-bottom: 0; }
+  /* Body copy inside a column is the caption to its h3, not a lede. */
+  :is(.bcms-column, .bcms-col) :is(.bcms-block--text, .bcms-text) { font-size: var(--step-0); }
 
   /* Buttons stay inline so a hero's primary + secondary sit side by side. */
-  .page-body :is(.bcms-block--button, .bcms-btn) { margin-right: 0.85rem; }
+  .page-body :is(.bcms-block--button, .bcms-btn) { margin-right: var(--space-2xs); }
   .bcms-block--button, .bcms-button, .bcms-btn {
-    display: inline-flex; align-items: center; gap: 0.5rem;
-    padding: 0.9rem 1.7rem; border-radius: 999px;
+    display: inline-flex; align-items: center; gap: var(--space-2xs);
+    padding: 0.8rem 1.5rem; border-radius: var(--radius-pill);
     font-weight: 600; font-size: var(--step-0); letter-spacing: -0.01em; text-decoration: none;
-    transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), background-color var(--dur) var(--ease), border-color var(--dur) var(--ease);
-    will-change: transform;
+    min-height: 44px; /* WCAG AA hit target, all viewports */
+    vertical-align: middle; /* two inline-flex CTAs side by side would otherwise sit 1px off */
+    transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease), color var(--dur) var(--ease);
   }
-  .bcms-button--primary, .bcms-btn-primary { background: var(--primary); color: var(--primary-fg); box-shadow: var(--glow); }
-  .bcms-button--secondary, .bcms-btn-secondary { background: var(--surface); color: var(--ink); border: 1px solid var(--line-strong); box-shadow: var(--shadow-sm); }
-  :is(.bcms-button, .bcms-btn, .bcms-block--button):hover { text-decoration: none; transform: translateY(-2px); }
-  :is(.bcms-button--primary, .bcms-btn-primary):hover { background: var(--primary-strong); box-shadow: var(--glow-strong); }
-  :is(.bcms-button--secondary, .bcms-btn-secondary):hover { border-color: var(--accent); color: var(--accent); }
-  :is(.bcms-button, .bcms-btn):active { transform: translateY(0); }
+  .bcms-button--primary, .bcms-btn-primary { background: var(--primary); color: var(--primary-fg); }
+  .bcms-button--secondary, .bcms-btn-secondary { background: var(--surface); color: var(--ink); border: 1px solid var(--line-strong); }
+  :is(.bcms-button, .bcms-btn, .bcms-block--button):hover { text-decoration: none; }
+  :is(.bcms-button--primary, .bcms-btn-primary):hover { background: var(--primary-strong); }
+  :is(.bcms-button--secondary, .bcms-btn-secondary):hover { border-color: var(--primary); color: var(--primary); }
 
-  /* Images (Next: figure.bcms-block--image; Astro: bare img/figure). */
-  .bcms-block--image, .page-body figure { margin: 2.75rem 0 !important; }
-  .bcms-block--image img, .page-body > div img { border-radius: var(--radius-lg); width: 100%; box-shadow: var(--shadow-lg); }
-  .bcms-block--image figcaption, .page-body figcaption { color: var(--muted); font-size: var(--step--1); text-align: center; margin-top: 0.7rem; }
+  /* Images (Next: figure.bcms-block--image; Astro: bare img/figure). Hairline-framed, not
+     shadow-floated — depth comes from the border. */
+  .bcms-block--image, .page-body figure { margin: var(--space-2xl) 0 !important; }
+  .bcms-block--image img, .page-body > div img {
+    border-radius: var(--radius-lg); width: 100%; border: 1px solid var(--line);
+  }
+  .bcms-block--image figcaption, .page-body figcaption {
+    color: var(--muted); font-size: var(--step--1); margin-top: var(--space-2xs);
+  }
 
-  .bcms-block--columns, .bcms-cols { margin: 2.5rem 0; }
+  .bcms-block--columns, .bcms-cols { margin: var(--space-lg) 0; }
+  /* The renderer hard-codes `grid-template-columns:repeat(N,1fr)` INLINE, so N columns stay N
+     columns at every width — a 3-up feature row becomes three ~90px slivers on a phone.
+     Overriding an inline style is the one case !important is the correct tool. */
+  @media (max-width: 48rem) {
+    .bcms-block--columns, .bcms-cols { grid-template-columns: minmax(0, 1fr) !important; }
+  }
+  /* Bare `1fr` is `minmax(auto,1fr)` — it refuses to shrink below the track's min-content
+     width, so a wide image or a long word inside a column forces a page-level scrollbar.
+     min-width:0 on the item is the same remedy as minmax(0,1fr) on the track, and it works
+     without knowing N. */
   .bcms-column, .bcms-col { min-width: 0; }
-  .bcms-block--section { position: relative; padding-block: clamp(2rem, 4vw, 4rem); }
+  .bcms-block--section { padding-block: clamp(var(--space-lg), 4vw, var(--space-xl)); }
 
-  /* ── Navbar / Footer chrome ──────────────────────────────────────────── */
-  .bcms-block--navbar, .site-nav {
+  /* ── N1b nav: wordmark · links · one CTA ─────────────────────────────────
+     Three-section, hairline-ruled, flush. Not N1a (wordmark + inline links), the AI tell. */
+  .site-nav {
     position: sticky; top: 0; z-index: 50;
-    display: flex; align-items: center; gap: 1.5rem;
-    padding: 0.85rem max(var(--gutter), calc((100% - var(--maxw)) / 2)); max-width: none;
-    background: oklch(0.985 0.004 286 / 0.6);
-    backdrop-filter: saturate(1.5) blur(14px); -webkit-backdrop-filter: saturate(1.5) blur(14px);
-    border-bottom: 1px solid transparent;
+    display: flex; align-items: center; gap: var(--space-md);
+    padding: var(--space-xs) max(var(--gutter), calc((100% - var(--maxw)) / 2));
+    background: oklch(from var(--color-paper) l c h / 0.85);
+    backdrop-filter: saturate(1.4) blur(12px); -webkit-backdrop-filter: saturate(1.4) blur(12px);
+    border-bottom: 1px solid var(--line);
   }
-  .bcms-navbar-logo img { height: 30px; width: auto; border-radius: 6px; }
-  .bcms-navbar-links { display: flex; gap: 1.75rem; margin-left: auto; align-items: center; }
-  .bcms-navbar-links a, .site-nav .links a { color: var(--ink); font-weight: 500; font-size: var(--step--1); transition: color var(--dur) var(--ease); }
-  .bcms-navbar-links a:hover, .site-nav .links a:hover { color: var(--accent); text-decoration: none; }
-  .site-nav .brand { font-family: var(--font-display); font-weight: 700; color: var(--ink); font-size: var(--step-1); letter-spacing: -0.02em; }
-  .site-nav .brand .dot, .site-footer-brand .brand .dot { color: var(--accent); }
-  .site-nav .links { display: flex; align-items: center; gap: 1.75rem; margin-left: auto; }
+  .site-nav .links { display: flex; align-items: center; gap: var(--space-md); margin-left: auto; }
+  .site-nav .links a {
+    color: var(--ink-2); font-weight: 500; font-size: var(--step-0);
+    white-space: nowrap; /* a nav link must never wrap to two lines */
+    transition: color var(--dur) var(--ease);
+  }
+  .site-nav .links a:hover { color: var(--primary); text-decoration: none; }
+  .site-nav .links a[aria-current="page"] { color: var(--ink); font-weight: 600; }
+  .site-nav .nav-cta { margin-left: var(--space-2xs); }
+  .brand {
+    font-family: var(--font-display); font-weight: 700; color: var(--ink);
+    font-size: var(--step-1); letter-spacing: -0.03em; white-space: nowrap;
+  }
+  .brand:hover { text-decoration: none; }
+  .brand .dot { color: var(--primary); }
+  /* Below 40rem the link row would wrap under the wordmark; keep the CTA, drop the links —
+     the footer carries the full index. */
+  @media (max-width: 40rem) {
+    .site-nav .links a:not(.nav-cta) { display: none; }
+  }
 
-  .bcms-block--footer, .site-footer { border-top: 1px solid var(--line); background: var(--paper-2); margin-top: 6rem; }
-  .bcms-footer-cols, .site-footer-cols {
-    display: grid; grid-template-columns: 1.6fr repeat(auto-fit, minmax(140px, 1fr)); gap: 2.5rem;
-    max-width: var(--maxw); margin: 0 auto; padding: 4rem var(--gutter) 1.75rem;
+  /* ── Ft7 footer: newsletter-first ────────────────────────────────────────
+     Not Ft3 (4 link columns + social row + copyright) — this genre bans it (gate 43). The
+     newsletter is the footer's reason to exist; the index is a single quiet row. */
+  .site-footer { border-top: 1px solid var(--line); background: var(--paper-2); margin-top: var(--space-3xl); }
+  .site-footer-inner {
+    max-width: var(--maxw); margin: 0 auto; padding: var(--space-2xl) var(--gutter) var(--space-lg);
+    display: grid; gap: var(--space-xl); grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    align-items: start;
   }
-  .bcms-footer-col h4, .site-footer-col h4 { margin: 0 0 0.9rem; font-size: var(--step--1); text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); font-weight: 600; }
-  .bcms-footer-col ul, .site-footer-col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.55rem; }
-  .bcms-footer-col a, .site-footer-col a { color: var(--ink); font-size: var(--step-0); }
-  .bcms-footer-col a:hover, .site-footer-col a:hover { color: var(--accent); text-decoration: none; }
-  .site-footer-brand .brand { font-family: var(--font-display); font-weight: 700; font-size: var(--step-1); letter-spacing: -0.02em; }
-  .site-footer-brand p { color: var(--muted); margin-top: 0.75rem; max-width: 32ch; }
-  .bcms-footer-copy, .site-footer-copy { max-width: var(--maxw); margin: 0 auto; padding: 1.5rem var(--gutter) 3rem; color: var(--muted); font-size: var(--step--1); border-top: 1px solid var(--line); }
+  @media (max-width: 48rem) { .site-footer-inner { grid-template-columns: minmax(0, 1fr); } }
+  .site-footer-say h2 {
+    font-family: var(--font-display); font-size: var(--step-2); font-weight: 700;
+    letter-spacing: -0.03em; line-height: 1.1; margin: 0; color: var(--ink); max-width: 18ch;
+  }
+  .site-footer-say p { color: var(--muted); margin: var(--space-2xs) 0 0; max-width: 42ch; }
+  .site-footer-meta {
+    max-width: var(--maxw); margin: 0 auto;
+    padding: var(--space-md) var(--gutter) var(--space-2xl);
+    border-top: 1px solid var(--line);
+    display: flex; flex-wrap: wrap; gap: var(--space-sm) var(--space-md); align-items: baseline;
+  }
+  .site-footer-meta nav { display: flex; flex-wrap: wrap; gap: var(--space-sm) var(--space-md); }
+  .site-footer-meta a { color: var(--ink-2); font-size: var(--step--1); white-space: nowrap; }
+  .site-footer-meta a:hover { color: var(--primary); text-decoration: none; }
+  .site-footer-copy { color: var(--muted); font-size: var(--step--1); margin: 0; margin-left: auto; }
+  .site-footer-socials { display: flex; gap: var(--space-md); }
+
+  /* ── Newsletter (footer) ─────────────────────────────────────────────── */
+  .newsletter { display: grid; gap: var(--space-2xs); }
+  .newsletter-label { font-weight: 600; font-size: var(--step--1); color: var(--ink); }
+  .newsletter-row { display: flex; gap: var(--space-2xs); flex-wrap: wrap; }
+  .newsletter-row input {
+    flex: 1 1 12rem; min-width: 0; padding: 0.7rem 0.9rem;
+    border: 1px solid var(--line-strong); border-radius: var(--radius-pill);
+    font: inherit; color: var(--ink); background: var(--surface);
+    transition: border-color var(--dur) var(--ease);
+  }
+  .newsletter-row input:focus { outline: none; border-color: var(--primary); }
+  .newsletter-row button {
+    background: var(--primary); color: var(--primary-fg); border: 0; cursor: pointer;
+    padding: 0.7rem 1.3rem; border-radius: var(--radius-pill); font: inherit; font-weight: 600;
+    min-height: 44px; transition: background-color var(--dur) var(--ease);
+  }
+  .newsletter-row button:hover { background: var(--primary-strong); }
+  .newsletter-row button:disabled { opacity: 0.6; cursor: progress; }
+  .newsletter-note { font-size: var(--step--1); color: var(--muted); margin: 0; }
+  .newsletter-msg { font-size: var(--step--1); margin: 0; }
+  .newsletter-msg[hidden] { display: none; }
+  .newsletter-msg--ok { color: var(--success); }
+  .newsletter-msg--err { color: var(--danger); }
 
   /* ── Form (Next: bcms-block--form; Astro: bcms-form; shared bcms-field) ─ */
-  .bcms-block--form, .bcms-form { max-width: 580px; margin: 2.5rem auto 0; padding: clamp(1.5rem, 1rem + 2vw, 2.5rem); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); }
-  .bcms-field { display: block; margin: 0 0 1.2rem; }
-  .bcms-field label { font-weight: 600; font-size: var(--step--1); }
-  .bcms-field input, .bcms-field textarea, .bcms-field select {
-    width: 100%; margin-top: 0.45rem; padding: 0.8rem 1rem;
-    border: 1px solid var(--line-strong); border-radius: var(--radius-sm); font: inherit; color: var(--ink); background: var(--surface);
-    transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+  .bcms-block--form, .bcms-form {
+    max-width: 560px; margin: var(--space-lg) 0 0; padding: clamp(1.25rem, 1rem + 2vw, 2rem);
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg);
   }
-  .bcms-field input:focus, .bcms-field textarea:focus, .bcms-field select:focus { outline: none; border-color: var(--accent); box-shadow: var(--ring); }
-  .bcms-field textarea { min-height: 150px; resize: vertical; }
-  .bcms-field--checkbox, .bcms-check { display: flex; align-items: flex-start; gap: 0.5rem; font-weight: 500; margin: 0 0 1.2rem; }
-  .bcms-field--checkbox input, .bcms-check input { width: auto; margin-top: 0.2rem; }
-  .bcms-field-error { display: block; color: oklch(0.55 0.2 25); font-size: var(--step--1); margin-top: 0.3rem; }
+  .bcms-field { display: block; margin: 0 0 var(--space-sm); }
+  .bcms-field label { font-weight: 600; font-size: var(--step--1); color: var(--ink); }
+  .bcms-field input, .bcms-field textarea, .bcms-field select {
+    width: 100%; margin-top: 0.4rem; padding: 0.7rem 0.9rem;
+    border: 1px solid var(--line-strong); border-radius: var(--radius-sm); font: inherit;
+    color: var(--ink); background: var(--surface);
+    transition: border-color var(--dur) var(--ease);
+  }
+  .bcms-field input:focus, .bcms-field textarea:focus, .bcms-field select:focus { outline: none; border-color: var(--primary); box-shadow: var(--ring); }
+  .bcms-field textarea { min-height: 140px; resize: vertical; }
+  .bcms-field--checkbox, .bcms-check { display: flex; align-items: flex-start; gap: var(--space-2xs); font-weight: 500; margin: 0 0 var(--space-sm); }
+  .bcms-field--checkbox input, .bcms-check input { width: auto; margin-top: 0.25rem; }
+  .bcms-field-error { display: block; color: var(--danger); font-size: var(--step--1); margin-top: 0.3rem; }
   :is(.bcms-block--form, .bcms-form) button[type="submit"] {
     background: var(--primary); color: var(--primary-fg); border: 0; cursor: pointer;
-    padding: 0.9rem 1.6rem; border-radius: 999px; font: inherit; font-weight: 600; width: 100%; margin-top: 0.25rem;
-    box-shadow: var(--glow); transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), background-color var(--dur) var(--ease);
+    padding: 0.8rem 1.5rem; border-radius: var(--radius-pill); font: inherit; font-weight: 600;
+    width: 100%; margin-top: 0.25rem; min-height: 44px;
+    transition: background-color var(--dur) var(--ease);
   }
-  :is(.bcms-block--form, .bcms-form) button[type="submit"]:hover { transform: translateY(-2px); background: var(--primary-strong); box-shadow: var(--glow-strong); }
-  :is(.bcms-block--form, .bcms-form) button[type="submit"]:disabled { opacity: 0.6; cursor: progress; transform: none; }
-  .bcms-form-status, .bcms-form-msg { margin-top: 0.9rem; padding: 0.75rem 1rem; border-radius: var(--radius-sm); font-size: var(--step-0); background: var(--primary-soft); color: var(--ink); }
-  .bcms-form-status--success { background: oklch(0.95 0.06 160); color: oklch(0.45 0.12 160); }
-  .bcms-form-status--error { background: oklch(0.95 0.05 25); color: oklch(0.5 0.18 25); }
+  :is(.bcms-block--form, .bcms-form) button[type="submit"]:hover { background: var(--primary-strong); }
+  :is(.bcms-block--form, .bcms-form) button[type="submit"]:disabled { opacity: 0.6; cursor: progress; }
+  .bcms-form-status, .bcms-form-msg { margin-top: var(--space-xs); padding: 0.7rem 0.9rem; border-radius: var(--radius-sm); font-size: var(--step-0); background: var(--primary-soft); color: var(--ink); }
+  .bcms-form-status--success { background: var(--success-soft); color: var(--success); }
+  .bcms-form-status--error { background: var(--danger-soft); color: var(--danger); }
   .bcms-form-msg[hidden] { display: none; }
 
   /* ── Blog / Case Study route chrome ──────────────────────────────────── */
-  .page-head { padding: clamp(3.5rem, 2rem + 5vw, 6rem) 0 1rem; }
-  .page-head h1 { font-family: var(--font-display); font-weight: 700; font-size: var(--step-3); letter-spacing: -0.03em; margin: 0 0 0.6rem; line-height: 1.05; }
-  .page-head p { color: var(--muted); margin: 0; font-size: var(--step-1); max-width: 50ch; }
-
-  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.75rem; padding: 2.75rem 0 4rem; }
-  .card {
-    border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: clip; background: var(--surface); box-shadow: var(--shadow-sm);
-    transition: box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease), border-color var(--dur) var(--ease);
+  .page-head { padding: clamp(3rem, 2rem + 4vw, 5rem) 0 var(--space-sm); }
+  .page-head h1 {
+    font-family: var(--font-display); font-weight: 700; font-size: var(--step-4);
+    letter-spacing: -0.03em; margin: 0 0 var(--space-2xs); line-height: 1.05; color: var(--ink);
   }
-  .card:hover { box-shadow: var(--shadow-lg); transform: translateY(-5px); border-color: var(--primary-soft); }
+  .page-head p { color: var(--muted); margin: 0; font-size: var(--step-1); max-width: 50ch; }
+  .empty-note { color: var(--muted); padding-bottom: var(--space-2xl); }
+
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(17rem, 100%), 1fr)); gap: var(--space-md); padding: var(--space-xl) 0 var(--space-2xl); }
+  .card {
+    border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: clip; background: var(--surface);
+    transition: border-color var(--dur) var(--ease);
+  }
+  .card:hover { border-color: var(--line-strong); }
   .card a { color: inherit; text-decoration: none; display: block; }
-  .card .thumb { aspect-ratio: 16 / 10; object-fit: cover; width: 100%; transition: transform 0.6s var(--ease); }
-  .card:hover .thumb { transform: scale(1.05); }
-  .card .body { padding: 1.4rem 1.5rem 1.65rem; }
-  .card .eyebrow { font-size: var(--step--1); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; color: var(--accent); }
-  .card h3 { font-family: var(--font-display); font-weight: 600; margin: 0.45rem 0 0.55rem; font-size: var(--step-1); letter-spacing: -0.02em; }
+  .card a:hover { text-decoration: none; }
+  .card .thumb { aspect-ratio: 16 / 10; object-fit: cover; width: 100%; }
+  .card .body { padding: var(--space-md); }
+  .card .eyebrow { font-size: var(--step--1); font-weight: 600; color: var(--primary); }
+  .card h3 { font-family: var(--font-display); font-weight: 600; margin: 0.35rem 0 0.4rem; font-size: var(--step-1); letter-spacing: -0.02em; color: var(--ink); }
   .card p { margin: 0; color: var(--muted); font-size: var(--step-0); }
 
-  .article { max-width: var(--maxw-prose); margin: 0 auto; padding: clamp(3rem, 2rem + 4vw, 5rem) var(--gutter) 5rem; }
-  .article .cover { border-radius: var(--radius-lg); margin: 2rem 0; width: 100%; aspect-ratio: 16/9; object-fit: cover; box-shadow: var(--shadow-lg); }
-  .article h1 { font-family: var(--font-display); font-weight: 700; font-size: var(--step-3); letter-spacing: -0.03em; margin: 0 0 0.6rem; line-height: 1.05; text-wrap: balance; }
-  .article .byline { color: var(--muted); margin: 0 0 1rem; font-size: var(--step--1); }
-  .article .prose { font-size: var(--step-1); line-height: 1.75; }
-  .article .prose > * + * { margin-top: 1.3rem; }
-  .article .prose h2 { font-family: var(--font-display); font-weight: 600; margin-top: 2.5rem; font-size: var(--step-2); letter-spacing: -0.02em; }
-  .article .prose a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
-  .article .prose code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; background: var(--paper-2); padding: 0.15em 0.45em; border-radius: 6px; }
-  .back-link { display: inline-flex; gap: 0.4ch; margin-bottom: 1.25rem; color: var(--muted); font-size: var(--step--1); }
-  .back-link:hover { color: var(--accent); text-decoration: none; }
+  .article { max-width: var(--maxw-prose); margin: 0 auto; padding: clamp(2.5rem, 2rem + 3vw, 4rem) var(--gutter) var(--space-2xl); }
+  .article .cover { border-radius: var(--radius-lg); margin: var(--space-lg) 0; width: 100%; aspect-ratio: 16/9; object-fit: cover; border: 1px solid var(--line); }
+  .article h1 { font-family: var(--font-display); font-weight: 700; font-size: var(--step-4); letter-spacing: -0.03em; margin: 0 0 var(--space-2xs); line-height: 1.05; text-wrap: balance; color: var(--ink); }
+  .article .byline { color: var(--muted); margin: 0 0 var(--space-sm); font-size: var(--step--1); }
+  .article .prose { font-size: var(--step-1); line-height: 1.7; }
+  .article .prose > * + * { margin-top: var(--space-sm); }
+  .article .prose h2 { font-family: var(--font-display); font-weight: 600; margin-top: var(--space-xl); font-size: var(--step-2); letter-spacing: -0.02em; color: var(--ink); }
+  .article .prose a { text-decoration: underline; text-underline-offset: 3px; }
+  .article .prose code { font-family: var(--font-mono); font-size: 0.9em; background: var(--paper-2); padding: 0.15em 0.45em; border-radius: 6px; }
+  .article .summary { color: var(--muted); }
+  .back-link { display: inline-flex; gap: 0.4ch; margin-bottom: var(--space-sm); color: var(--muted); font-size: var(--step--1); }
+  .back-link:hover { color: var(--primary); text-decoration: none; }
+
+  /* ── 404 ─────────────────────────────────────────────────────────────── */
+  .notfound { max-width: var(--maxw-prose); margin: 0 auto; padding: clamp(4rem, 3rem + 6vw, 8rem) var(--gutter); }
+  .notfound h1 { font-family: var(--font-display); font-size: var(--step-4); font-weight: 700; letter-spacing: -0.03em; margin: 0 0 var(--space-2xs); color: var(--ink); }
+  .notfound p { color: var(--muted); font-size: var(--step-1); margin: 0 0 var(--space-md); }
 }
 
-@keyframes aurora-spin { to { --aurora-angle: 360deg; } }
-
-/* ── Scroll reveal + image parallax: JS-free via animation-timeline. Behind
-   @supports so unsupported browsers show everything; off under reduced-motion. ─ */
-@media (prefers-reduced-motion: no-preference) {
+/* Reveal — fade + rise, JS-free via animation-timeline. Behind @supports so unsupported
+   browsers show everything. The whole motion engine: no aurora, no grain, no parallax —
+   those belong to the `modern-aesthetic` template. Scroll-linked motion is off below 40rem,
+   where it fights the platform's own scroll physics. */
+@media (prefers-reduced-motion: no-preference) and (min-width: 40rem) {
   @supports (animation-timeline: view()) {
     .page-body > div > :is(h2, h3, .bcms-block--text, .bcms-text, .bcms-block--image, figure, .bcms-block--columns, .bcms-cols, .bcms-block--form, .bcms-form),
-    .card, .page-head {
-      animation: reveal-up linear both; animation-timeline: view(); animation-range: entry 0% cover 26%;
+    .card {
+      animation: reveal-up linear both; animation-timeline: view(); animation-range: entry 0% cover 24%;
     }
-    @keyframes reveal-up { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: none; } }
-    .page-body > div img, .article .cover {
-      animation: parallax-drift linear both; animation-timeline: view(); animation-range: entry 0% exit 100%;
-    }
-    @keyframes parallax-drift { from { transform: translateY(2.5%); } to { transform: translateY(-2.5%); } }
+    @keyframes reveal-up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
   }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  .page-body::after { animation: none; }
 }

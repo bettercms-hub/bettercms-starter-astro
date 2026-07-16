@@ -54,11 +54,18 @@ export const getSingleton = <T>(model: string): T | undefined => listEntries<T>(
 export type Repeatable<T> = { repeatable?: T[] };
 export type NavLink = { label: string; href: string };
 export type Social = { label: string; href: string };
+/** The `site` global — brand + chrome + SEO defaults, all editable in the CMS.
+ *  Every field here is seeded by the template and rendered somewhere; if you add one,
+ *  render it, and if you stop rendering one, drop it from the seed. */
 export type Site = {
   brandName?: string;
   navLinks?: Repeatable<NavLink>;
   footerTagline?: string;
   socials?: Repeatable<Social>;
+  seoTitle?: string;
+  seoDescription?: string;
+  ogImage?: Image;
+  twitterHandle?: string;
 };
 /** Unwrap a repeatable field to a plain list. */
 export const items = <T>(field?: Repeatable<T>): T[] => (Array.isArray(field?.repeatable) ? field.repeatable : []);
@@ -81,7 +88,6 @@ export type CaseStudyFields = {
   summary?: string;
   coverImage?: Image;
   body?: RichText;
-  result?: string;
 };
 export const authorData = (a: BlogPostFields["author"]): Author | null =>
   !a || typeof a === "string" ? null : a.data ?? null;

@@ -1,0 +1,52 @@
+---
+/** Ft7 footer — newsletter-first.
+ *
+ *  Replaces the old Ft3 (four link columns + social row + copyright): the most-recognised AI
+ *  footer fingerprint, and one this genre bans outright. Ft7 leads with the one thing the
+ *  footer is actually for, and keeps the index as a single quiet row — which also stops
+ *  Contact appearing a third time on every page.
+ *
+ *  `socials` is seeded in the `site` global and, until now, rendered nowhere. */
+import { getForms, items, type Site } from "../lib/content";
+import { brandName } from "../lib/seo";
+import NewsletterForm from "./NewsletterForm.astro";
+
+interface Props {
+  site?: Site;
+}
+const { site } = Astro.props;
+const brand = brandName();
+const tagline = site?.footerTagline ?? "A marketing starter powered by BetterCMS.";
+const socials = items(site?.socials);
+const nav = items(site?.navLinks);
+
+/** The seeded Newsletter form. Absent (or renamed) → the footer just drops the block. */
+const newsletter = getForms().items.find((f) => /newsletter/i.test(f.name ?? ""));
+---
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <div class="site-footer-say">
+      <h2>{tagline}</h2>
+    </div>
+    {newsletter ? (
+      <NewsletterForm form={newsletter} />
+    ) : (
+      <p class="newsletter-note">{`Add a Newsletter form in the CMS and it appears here.`}</p>
+    )}
+  </div>
+  <div class="site-footer-meta">
+    <a class="brand" href="/">{brand}<span class="dot">.</span></a>
+    <nav aria-label="Footer">
+      {nav.map((l) => <a href={l.href}>{l.label}</a>)}
+    </nav>
+    {socials.length > 0 && (
+      <div class="site-footer-socials">
+        {socials.map((s) => (
+          <a href={s.href} target="_blank" rel="noreferrer noopener">{s.label}</a>
+        ))}
+      </div>
+    )}
+    <p class="site-footer-copy">© {new Date().getFullYear()} {brand}</p>
+  </div>
+</footer>

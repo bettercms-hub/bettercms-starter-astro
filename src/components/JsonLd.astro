@@ -1,0 +1,11 @@
+---
+/** Structured data — one <script> per schema node. The 50 KB cap is a guard against a
+ *  runaway CMS field ending up inline in every page's <head>. */
+interface Props {
+  data: Array<Record<string, unknown>>;
+}
+const { data } = Astro.props;
+const blobs = data.filter(Boolean).map((s) => JSON.stringify(s)).filter((j) => j.length <= 50_000);
+---
+
+{blobs.map((json) => <script type="application/ld+json" is:inline set:html={json} />)}
