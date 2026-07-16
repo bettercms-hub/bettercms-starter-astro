@@ -1,10 +1,13 @@
-/* Hallmark · genre: modern-minimal · macrostructure: Marquee Hero · theme: Coral
- * enrichment: none (typography only) · nav: N1b · footer: Ft7
- * pre-emit critique: P5 H5 E4 S4 R5 V4
+/* Marketing Starter — design system: "Coral" · modern-minimal · typography-only
  *
- * Marketing Starter — the CALM one. The sibling `modern-aesthetic` template is the premium,
- * animated, immersive site; this is the polished default: fast, quiet, rebrandable. The system
- * is documented in design.md at the repo root — read that before changing tokens.
+ * The CALM one. The sibling `modern-aesthetic` template is the premium, animated, immersive
+ * site; this is the polished default: fast, quiet, rebrandable. If a change here makes it
+ * compete on spectacle, it's the wrong change.
+ *
+ * Warm-grey paper, ONE coral accent (under 5% of any viewport), Geist throughout, soft pill
+ * CTAs, and reveal-only motion — no aurora, no grain, no parallax. The full system, including
+ * the copy rules, is documented in design.md at the repo root — read that before changing
+ * tokens.
  *
  * Styling built on Tailwind CSS v4. Design tokens live in @theme (so they also generate
  * utilities like bg-paper / text-ink / font-display for the hand-written chrome), and the
