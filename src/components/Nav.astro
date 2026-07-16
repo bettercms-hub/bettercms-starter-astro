@@ -1,0 +1,39 @@
+---
+/** N1b nav — three sections: wordmark · links · one CTA.
+ *
+ *  Everything comes from the `site` global, so rebranding happens in the CMS, not here. The
+ *  CTA is DERIVED from navLinks (the last entry) rather than appended to them: the old nav
+ *  hard-coded a Contact button on top of the seeded Contact link, so Contact rendered twice. */
+import { items, type NavLink, type Site } from "../lib/content";
+import { brandName } from "../lib/seo";
+
+interface Props {
+  site?: Site;
+}
+const { site } = Astro.props;
+const brand = brandName();
+
+const FALLBACK: NavLink[] = [
+  { label: "About", href: "/about" },
+  { label: "Blog", href: "/blog" },
+  { label: "Case studies", href: "/case-studies" },
+  { label: "Contact", href: "/contact" },
+];
+const nav = items(site?.navLinks).length ? items(site?.navLinks) : FALLBACK;
+/** The last link is the CTA — one button, never a duplicate of a link beside it. */
+const cta = nav.at(-1);
+const links = nav.slice(0, -1);
+
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const current = (href: string) => (href.replace(/\/$/, "") || "/") === path;
+---
+
+<nav class="site-nav" aria-label="Primary">
+  <a class="brand" href="/">{brand}<span class="dot">.</span></a>
+  <div class="links">
+    {links.map((l) => (
+      <a href={l.href} aria-current={current(l.href) ? "page" : undefined}>{l.label}</a>
+    ))}
+    {cta && <a class="bcms-btn bcms-btn-primary nav-cta" href={cta.href}>{cta.label}</a>}
+  </div>
+</nav>

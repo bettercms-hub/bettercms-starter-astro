@@ -17,6 +17,10 @@ const snapshotWorkspace = (() => {
 
 export default defineConfig({
   output: "static",
+  // Canonical + og:url need an absolute origin, and a site's domain isn't known until it's
+  // deployed. The deploy Action sets PUBLIC_SITE_URL; unset (a local build), Base.astro omits
+  // those two tags rather than emit a relative URL that would be worse than nothing.
+  site: process.env.PUBLIC_SITE_URL || undefined,
   vite: { plugins: [tailwindcss()] },
   integrations: [
     bettercms({

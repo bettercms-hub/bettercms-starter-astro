@@ -1,26 +1,28 @@
 ---
 import Base from "../../layouts/Base.astro";
 import { listEntries, type CaseStudyFields } from "../../lib/content";
+import { brandName } from "../../lib/seo";
 
 const items = listEntries<CaseStudyFields>("case-study");
+const brand = brandName();
 ---
 
-<Base title="Case Studies — Acme" description="How teams ship faster with Acme.">
-  <main class="container">
+<Base title={`Case studies — ${brand}`} description={`Selected work from ${brand}.`}>
+  <main id="main" class="container">
     <header class="page-head">
-      <h1>Case Studies</h1>
-      <p>Real teams, real results.</p>
+      <h1>Case studies</h1>
+      <p>A closer look at what we’ve shipped, and how.</p>
     </header>
     {items.length === 0 ? (
-      <p>No published case studies yet.</p>
+      <p class="empty-note">No published case studies yet.</p>
     ) : (
       <div class="card-grid">
         {items.map(({ slug, data }) => (
           <article class="card">
             <a href={`/case-studies/${slug}`}>
-              {data.coverImage?.url && <img class="thumb" src={data.coverImage.url} alt={data.coverImage.alt ?? ""} />}
+              {data.coverImage?.url && <img class="thumb" src={data.coverImage.url} alt={data.coverImage.alt ?? ""} loading="lazy" />}
               <div class="body">
-                {data.result && <span class="eyebrow">{data.result}</span>}
+                {data.client && <span class="eyebrow">{data.client}</span>}
                 <h3>{data.title}</h3>
                 {data.summary && <p>{data.summary}</p>}
               </div>

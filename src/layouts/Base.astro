@@ -1,71 +1,71 @@
 ---
-/** Shared page shell: <head> meta + nav + footer. Marketing pages render their CMS block tree
- *  into the slot; blog/case routes render their own markup. Nav/footer chrome (brand, links,
- *  tagline) reads from the `site` global so it's editable in the CMS — falling back to the
- *  starter defaults when the global is absent. */
+/** Shared page shell: <head> meta + skip link + nav + footer.
+ *
+ *  Marketing pages render their CMS block tree into the slot; blog/case routes render their own
+ *  markup. Every route OWNS its own landmark (<main>) — the shell only supplies chrome.
+ *
+ *  Brand and chrome come from the `site` global, so they're editable in the CMS. Nothing here
+ *  hard-codes a brand: a page that wants a title composes it from `brandName()`. */
 import "../styles/global.css";
-import { getSingleton, items, type Site } from "../lib/content";
+import { getSingleton, type Site } from "../lib/content";
+import { seo } from "../lib/seo";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+import JsonLd from "../components/JsonLd.astro";
 
+type Json = Record<string, unknown>;
 interface Props {
-  title?: string;
+  /** The route's own title. Always wins over the site's SEO title. */
+  title: string;
+  metaTitle?: string | null;
   description?: string | null;
+  /** Page-level JSON-LD; the site's Organization node is merged in automatically. */
+  schema?: Json | Json[];
 }
+
+const { title, metaTitle, description, schema } = Astro.props;
 const site = getSingleton<Site>("site");
-const brand = site?.brandName ?? "Acme";
-const { title = brand, description } = Astro.props;
-const NAV = items(site?.navLinks).length
-  ? items(site?.navLinks)
-  : [
-      { label: "Home", href: "/" },
-      { label: "Blog", href: "/blog" },
-      { label: "Case Studies", href: "/case-studies" },
-      { label: "About", href: "/about" },
-    ];
-const tagline =
-  site?.footerTagline ?? "Ship structured content faster. A marketing starter powered by BetterCMS.";
+const meta = seo({ title, metaTitle, description, schema });
+
+/** Absolute URLs need a known origin. `site` is set in astro.config from PUBLIC_SITE_URL —
+ *  unset (a local build), and we omit canonical/og:url rather than emit a relative one. */
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : meta.canonical;
 ---
 
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title}</title>
-    {description && <meta name="description" content={description} />}
+    <title>{meta.title}</title>
+    {meta.description && <meta name="description" content={meta.description} />}
+    {canonical && <link rel="canonical" href={canonical} />}
+
+    <meta property="og:title" content={meta.og.title} />
+    {meta.og.description && <meta property="og:description" content={meta.og.description} />}
+    <meta property="og:type" content={meta.og.type} />
+    {meta.og.image && <meta property="og:image" content={meta.og.image} />}
+    {canonical && <meta property="og:url" content={canonical} />}
+    {site?.brandName && <meta property="og:site_name" content={site.brandName} />}
+
+    <meta name="twitter:card" content={meta.twitter.card} />
+    <meta name="twitter:title" content={meta.twitter.title} />
+    {meta.twitter.description && <meta name="twitter:description" content={meta.twitter.description} />}
+    {meta.twitter.image && <meta name="twitter:image" content={meta.twitter.image} />}
+    {meta.twitter.site && <meta name="twitter:site" content={meta.twitter.site} />}
+
+    <JsonLd data={meta.jsonLd} />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
   </head>
   <body>
-    <nav class="site-nav">
-      <a class="brand" href="/">{brand}<span class="dot">.</span></a>
-      <div class="links">
-        {NAV.map((l) => <a href={l.href}>{l.label}</a>)}
-        <a class="bcms-btn bcms-btn-primary" href="/contact">Contact</a>
-      </div>
-    </nav>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Nav site={site} />
     <slot />
-    <footer class="site-footer">
-      <div class="site-footer-cols">
-        <div class="site-footer-brand">
-          <a class="brand" href="/">{brand}<span class="dot">.</span></a>
-          <p>{tagline}</p>
-        </div>
-        <div class="site-footer-col">
-          <h4>Explore</h4>
-          <ul>{NAV.map((l) => <li><a href={l.href}>{l.label}</a></li>)}</ul>
-        </div>
-        <div class="site-footer-col">
-          <h4>Get started</h4>
-          <ul>
-            <li><a href="/contact">Contact</a></li>
-            <li><a href="https://bettercms.ai" target="_blank" rel="noreferrer">BetterCMS</a></li>
-          </ul>
-        </div>
-      </div>
-      <p class="site-footer-copy">© {new Date().getFullYear()} {brand}. Built with BetterCMS.</p>
-    </footer>
+    <Footer site={site} />
   </body>
 </html>

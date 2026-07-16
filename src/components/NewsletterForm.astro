@@ -1,0 +1,78 @@
+---
+/** Footer newsletter (Ft7). Renders the seeded `Newsletter` form, which nothing rendered before.
+ *
+ *  Deliberately NOT <BcmsForm>. That component ships an inline script which binds
+ *  `document.querySelectorAll("form[data-bcms-form]")` — and it ships ONE COPY PER INSTANCE. A
+ *  second BcmsForm on a page that already has one (/contact) would give both forms two submit
+ *  handlers and POST every submission twice. So this form owns a scoped module script (Astro
+ *  bundles it once, however many times the footer renders) and does not carry `data-bcms-form`,
+ *  which would otherwise let BcmsForm's script adopt it. */
+import config from "bettercms:config";
+import type { DeliveryForm } from "@bettercms-ai/sdk";
+
+interface Props {
+  form: DeliveryForm;
+}
+const { form } = Astro.props;
+const action = `${config.apiUrl}/api/v1/forms/public/${encodeURIComponent(form.id)}/submissions`;
+const email = form.fields?.find((f) => f.type === "email");
+const emailKey = email?.key ?? "email";
+---
+
+<form class="newsletter" method="post" action={action} data-newsletter>
+  <label class="newsletter-label" for="newsletter-email">{email?.label ?? "Subscribe"}</label>
+  <div class="newsletter-row">
+    <input
+      id="newsletter-email"
+      type="email"
+      name={emailKey}
+      required
+      placeholder={email?.placeholder ?? "you@company.com"}
+      autocomplete="email"
+    />
+    <button type="submit">{form.submitLabel || "Subscribe"}</button>
+  </div>
+  {form.honeypotField && (
+    <input type="text" name={form.honeypotField} tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true" />
+  )}
+  {/* aria-live so the outcome reaches a screen reader — it's the only feedback there is. */}
+  <p class="newsletter-msg" data-newsletter-msg role="status" aria-live="polite" hidden></p>
+</form>
+
+<script
+  is:inline
+  define:vars={{ successMessage: form.successMessage ?? "Thanks — you're subscribed." }}
+>
+  document.querySelectorAll("form[data-newsletter]").forEach((form) => {
+    const msg = form.querySelector("[data-newsletter-msg]");
+    const button = form.querySelector("button[type=submit]");
+    const say = (text, ok) => {
+      if (!msg) return;
+      msg.textContent = text;
+      msg.hidden = false;
+      msg.classList.toggle("newsletter-msg--ok", ok);
+      msg.classList.toggle("newsletter-msg--err", !ok);
+    };
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+      const data = {};
+      new FormData(form).forEach((v, k) => { data[k] = v; });
+      button.disabled = true;
+      try {
+        const res = await fetch(form.action, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ data }),
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        form.reset();
+        say(successMessage, true);
+      } catch {
+        say("Something went wrong. Please try again.", false);
+      } finally {
+        button.disabled = false;
+      }
+    });
+  });
+</script>

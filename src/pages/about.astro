@@ -2,17 +2,18 @@
 import Base from "../layouts/Base.astro";
 import BcmsBlocks from "@bettercms-ai/astro/components/BcmsBlocks.astro";
 import { getPage, getForms } from "../lib/content";
+import { brandName } from "../lib/seo";
 
 const page = getPage("about");
 const { items: forms, turnstileSiteKey } = getForms();
 ---
 
-<Base title={page?.metaTitle ?? "About Acme"} description={page?.metaDescription}>
-  <main class="page-body">
+<Base title={page?.title ?? `About — ${brandName()}`} metaTitle={page?.metaTitle} description={page?.metaDescription}>
+  <main id="main" class="page-body">
     {page ? (
       <BcmsBlocks blocks={page.blocks} forms={forms} turnstileSiteKey={turnstileSiteKey} />
     ) : (
-      <p>This page hasn’t been published yet.</p>
+      <div><p class="empty-note">This page hasn’t been published yet.</p></div>
     )}
   </main>
 </Base>

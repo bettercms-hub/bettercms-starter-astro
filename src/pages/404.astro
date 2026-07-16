@@ -1,0 +1,14 @@
+---
+/** The site had no 404 page at all — an unknown URL fell through to the host's default.
+ *  BetterCMS hosting serves /404.html for unmatched paths on a static build. */
+import Base from "../layouts/Base.astro";
+import { brandName } from "../lib/seo";
+---
+
+<Base title={`Page not found — ${brandName()}`} description="That page doesn’t exist.">
+  <main id="main" class="notfound">
+    <h1>Page not found</h1>
+    <p>That link is broken, or the page has moved.</p>
+    <a class="bcms-btn bcms-btn-primary" href="/">Back to home</a>
+  </main>
+</Base>
