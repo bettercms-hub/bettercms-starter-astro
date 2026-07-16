@@ -10,10 +10,14 @@ const { items: forms, turnstileSiteKey } = getForms();
 
 <Base title={page?.title ?? `Contact — ${brandName()}`} metaTitle={page?.metaTitle} description={page?.metaDescription}>
   <main id="main" class="page-body">
-    {page ? (
+    {page?.blocks?.length ? (
       <BcmsBlocks blocks={page.blocks} forms={forms} turnstileSiteKey={turnstileSiteKey} />
     ) : (
-      <div><p class="empty-note">This page hasn’t been published yet.</p></div>
+      <div>
+        <p class="empty-note">
+          This page has no published content yet — add blocks to it in BetterCMS and publish.
+        </p>
+      </div>
     )}
   </main>
 </Base>

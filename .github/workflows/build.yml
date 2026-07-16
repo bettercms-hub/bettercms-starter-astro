@@ -6,10 +6,12 @@ name: Build
 # npm, not bun: package-lock.json is the only lockfile committed here, and it's what
 # `npm run fetch-content` / the deploy Action assume.
 
+# Pull requests only, deliberately. This file is copied into every project generated from
+# this template, where `bcms-rebuild.yml` ALREADY builds (and deploys) on push — gating push
+# here would build every change twice and bill it to the user's Actions minutes for no extra
+# signal. A PR is where a broken build should be caught, and nothing else covers that.
 on:
   pull_request:
-  push:
-    branches: [main]
 
 # Cancel superseded runs on the same ref (e.g. rapid pushes to a PR branch).
 concurrency:
