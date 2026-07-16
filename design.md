@@ -85,13 +85,16 @@ Wordmark · accent colour and its ≤5% placement · Geist · CTA voice · the n
 Macrostructure within the family. Marketing pages may carry CMS imagery; content pages are
 typography + cover images only.
 
-## Chrome archetypes
+## Chrome
 
-- **Nav — N1b** (three-section: wordmark · links · one CTA). Replaced N1a (wordmark + inline
-  links), the most-recognised AI nav fingerprint.
-- **Footer — Ft7 Newsletter-first.** Replaced Ft3 (index columns + social row + copyright),
-  which this genre bans outright (gate 43). Ft7 also gives the seeded `form_newsletter` — which
-  nothing rendered — a home.
+- **Nav — three sections: wordmark · links · one CTA.** The CTA is *derived* from the last
+  `navLinks` entry, never appended to them — the previous nav hard-coded a Contact button on
+  top of the seeded Contact link, so Contact rendered twice before you counted the footer.
+- **Footer — newsletter-first.** It leads with the one thing a footer is actually for, and
+  keeps the index to a single quiet row. It replaced four columns of links + a social row + a
+  copyright line: the most-recognised generated-footer shape, and the third place Contact was
+  being rendered. It's also what gives the seeded `form_newsletter` — which nothing rendered —
+  a home.
 
 ## Exports
 
