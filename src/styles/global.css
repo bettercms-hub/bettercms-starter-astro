@@ -5,7 +5,7 @@
  * compete on spectacle, it's the wrong change.
  *
  * Warm-grey paper, ONE coral accent (under 5% of any viewport), Geist throughout, soft pill
- * CTAs, and reveal-only motion — no aurora, no grain, no parallax. The full system, including
+ * CTAs, and no scroll motion at all — no reveal, no aurora, no grain, no parallax. The full system, including
  * the copy rules, is documented in design.md at the repo root — read that before changing
  * tokens.
  *
@@ -359,16 +359,16 @@
   .notfound p { color: var(--muted); font-size: var(--step-1); margin: 0 0 var(--space-md); }
 }
 
-/* Reveal — fade + rise, JS-free via animation-timeline. Behind @supports so unsupported
-   browsers show everything. The whole motion engine: no aurora, no grain, no parallax —
-   those belong to the `modern-aesthetic` template. Scroll-linked motion is off below 40rem,
-   where it fights the platform's own scroll physics. */
-@media (prefers-reduced-motion: no-preference) and (min-width: 40rem) {
-  @supports (animation-timeline: view()) {
-    .page-body > div > :is(h2, h3, .bcms-block--text, .bcms-text, .bcms-block--image, figure, .bcms-block--columns, .bcms-cols, .bcms-block--form, .bcms-form),
-    .card {
-      animation: reveal-up linear both; animation-timeline: view(); animation-range: entry 0% cover 24%;
-    }
-    @keyframes reveal-up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
-  }
-}
+/* No scroll reveal, deliberately. Text is visible the moment it renders.
+ *
+ * There WAS one here (`animation-timeline: view()` + `animation-range: entry 0% cover 24%`).
+ * A view() timeline is SCRUBBED by scroll position, not played once, so it had two faults a
+ * demo never shows and an editor hits immediately:
+ *   1. anything on screen whose range hadn't completed rendered part-transparent — a heading
+ *      sitting in the viewport at 14% opacity reads as a bug, not as motion;
+ *   2. scrolling back up re-hid it, because the timeline just runs backwards.
+ * In the Visual Editor's iframe that means content fading in and out while you edit it.
+ *
+ * It's also what the genre asks for: modern-minimal is "minimal. Reveals are off; the page is
+ * composed." If you add motion back, make it play once and STAY (IntersectionObserver + a
+ * class) — never leave content's visibility owned by scroll position. */
