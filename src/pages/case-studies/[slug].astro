@@ -1,5 +1,6 @@
 ---
 import Base from "../../layouts/Base.astro";
+import BcmsField from "@bettercms-ai/astro/components/BcmsField.astro";
 import { listEntries, getEntry, type CaseStudyFields } from "../../lib/content";
 import { caseStudySchema } from "../../lib/seo";
 
@@ -19,11 +20,11 @@ const f = cs.data;
   <main id="main">
     <article class="article">
       <a class="back-link" href="/case-studies">← Back to case studies</a>
-      <h1>{f.title}</h1>
-      {f.client && <p class="byline">{f.client}</p>}
-      {f.coverImage?.url && <img class="cover" src={f.coverImage.url} alt={f.coverImage.alt ?? ""} />}
-      {f.summary && <p class="prose summary">{f.summary}</p>}
-      {f.body?.html && <div class="prose" set:html={f.body.html} />}
+      <BcmsField path="title"><h1>{f.title}</h1></BcmsField>
+      {f.client && <BcmsField path="client"><p class="byline">{f.client}</p></BcmsField>}
+      {f.coverImage?.url && <img class="cover" src={f.coverImage.url} alt={f.coverImage.alt ?? ""} data-bcms-field="coverImage" data-bcms-kind="image" />}
+      {f.summary && <BcmsField path="summary"><p class="prose summary">{f.summary}</p></BcmsField>}
+      {f.body?.html && <BcmsField path="body" kind="richtext"><div class="prose" set:html={f.body.html} /></BcmsField>}
     </article>
   </main>
 </Base>

@@ -1,5 +1,6 @@
 ---
 import Base from "../../layouts/Base.astro";
+import BcmsField from "@bettercms-ai/astro/components/BcmsField.astro";
 import { listEntries, getEntry, authorData, type BlogPostFields } from "../../lib/content";
 import { blogPostingSchema } from "../../lib/seo";
 
@@ -26,10 +27,10 @@ const byline = [
   <main id="main">
     <article class="article">
       <a class="back-link" href="/blog">← Back to blog</a>
-      <h1>{f.title}</h1>
+      <BcmsField path="title"><h1>{f.title}</h1></BcmsField>
       {byline && <p class="byline">{byline}</p>}
-      {f.coverImage?.url && <img class="cover" src={f.coverImage.url} alt={f.coverImage.alt ?? ""} />}
-      {f.body?.html && <div class="prose" set:html={f.body.html} />}
+      {f.coverImage?.url && <img class="cover" src={f.coverImage.url} alt={f.coverImage.alt ?? ""} data-bcms-field="coverImage" data-bcms-kind="image" />}
+      {f.body?.html && <BcmsField path="body" kind="richtext"><div class="prose" set:html={f.body.html} /></BcmsField>}
     </article>
   </main>
 </Base>
