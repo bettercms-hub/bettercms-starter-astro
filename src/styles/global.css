@@ -202,7 +202,7 @@
      min-width:0 on the item is the same remedy as minmax(0,1fr) on the track, and it works
      without knowing N. */
   .bcms-column, .bcms-col { min-width: 0; }
-  .bcms-block--section { padding-block: clamp(var(--space-lg), 4vw, var(--space-xl)); }
+  .bcms-block--section, .bcms-section { padding-block: clamp(var(--space-lg), 4vw, var(--space-xl)); }
 
   /* ── N1b nav: wordmark · links · one CTA ─────────────────────────────────
      Three-section, hairline-ruled, flush. Not N1a (wordmark + inline links), the AI tell. */
