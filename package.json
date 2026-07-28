@@ -2,7 +2,7 @@
   "name": "bettercms-starter-astro",
   "version": "0.1.0",
   "private": true,
-  "description": "BetterCMS Marketing Starter (Astro) — Home, About, Contact (with form), Blog, and Case Studies, rendered from a BetterCMS project.",
+  "description": "BetterCMS Marketing Starter (Astro) \u2014 Home, About, Contact (with form), Blog, and Case Studies, rendered from a BetterCMS project.",
   "type": "module",
   "scripts": {
     "dev": "astro dev",
@@ -11,9 +11,9 @@
     "fetch-content": "node scripts/fetch-content.mjs"
   },
   "dependencies": {
-    "@bettercms-ai/astro": "^0.3.0",
-    "@bettercms-ai/sdk": "^1.6.0",
-    "@bettercms-ai/types": "^1.5.0",
+    "@bettercms-ai/astro": "^0.6.0",
+    "@bettercms-ai/sdk": "^1.10.0",
+    "@bettercms-ai/types": "^1.7.0",
     "astro": "^5.0.0"
   },
   "devDependencies": {
