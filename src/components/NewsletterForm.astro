@@ -1,12 +1,16 @@
 ---
 /** Footer newsletter (Ft7). Renders the seeded `Newsletter` form, which nothing rendered before.
  *
- *  Deliberately NOT <BcmsForm>. That component ships an inline script which binds
- *  `document.querySelectorAll("form[data-bcms-form]")` — and it ships ONE COPY PER INSTANCE. A
- *  second BcmsForm on a page that already has one (/contact) would give both forms two submit
- *  handlers and POST every submission twice. So this form owns a scoped module script (Astro
- *  bundles it once, however many times the footer renders) and does not carry `data-bcms-form`,
- *  which would otherwise let BcmsForm's script adopt it. */
+ *  Deliberately NOT <BcmsForm>: this is a one-field inline row (label · input · button) for the
+ *  footer, not that component's stacked field list, and it owns its own aria-live status copy.
+ *  It also stays off `data-bcms-form` so BcmsForm's script never adopts it — this form already
+ *  has a submit handler of its own, and a second one would POST every subscription twice.
+ *
+ *  It used to be justified by a stronger claim: that ANY second <BcmsForm> on a page double-bound,
+ *  because each instance inlines a copy of the script and every copy binds every
+ *  `form[data-bcms-form]` on the page. That is fixed — binding is guarded by a `bcmsFormBound`
+ *  flag and the success/redirect config now lives on the form element — so a second <BcmsForm>
+ *  alongside /contact's is safe today. */
 import config from "bettercms:config";
 import type { DeliveryForm } from "@bettercms-ai/sdk";
 
