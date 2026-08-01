@@ -1,7 +1,8 @@
 # Design — BetterCMS Marketing Starter
 
-A locked design system, shared by **both** starter repos (`bettercms-starter-astro` and
-`bettercms-starter`, Next). The two ship one identical `global.css`; this file explains it.
+A locked design system, shared by all **three** starter repos (`bettercms-starter-astro`,
+`bettercms-starter` (Next), and `bettercms-starter-react` (React + TypeScript on Vite)). All
+three ship one identical `global.css`; this file explains it.
 Extend or amend it — don't regenerate it per page.
 
 Fork this template? This file is yours. Change the tokens, keep the rules.
