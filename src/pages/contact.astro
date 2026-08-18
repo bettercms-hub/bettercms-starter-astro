@@ -1,7 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
 import BcmsBlocks from "@bettercms-ai/astro/components/BcmsBlocks.astro";
-import { getPage, getForms } from "../lib/content";
+import { getPage, getForms, getComponents } from "../lib/content";
 import { brandName } from "../lib/seo";
 
 const page = getPage("contact");
@@ -11,7 +11,7 @@ const { items: forms, turnstileSiteKey } = getForms();
 <Base title={page?.title ?? `Contact — ${brandName()}`} metaTitle={page?.metaTitle} description={page?.metaDescription}>
   <main id="main" class="page-body">
     {page?.blocks?.length ? (
-      <BcmsBlocks blocks={page.blocks} forms={forms} turnstileSiteKey={turnstileSiteKey} />
+      <BcmsBlocks blocks={page.blocks} forms={forms} components={getComponents()} turnstileSiteKey={turnstileSiteKey} />
     ) : (
       <div>
         <p class="empty-note">

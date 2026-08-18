@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import type { ContentBlock } from "@bettercms-ai/types";
+import type { ContentBlock, DeliveryComponent } from "@bettercms-ai/types";
 import type { DeliveryForm } from "@bettercms-ai/sdk";
 
 /**
@@ -21,6 +21,8 @@ interface Snapshot {
   collections?: Record<string, SnapshotEntry<unknown>[]>;
   pages?: SnapshotPage[];
   forms?: DeliveryForm[];
+  /** Definitions behind `component` blocks. Absent ⇒ every placed section renders as null. */
+  components?: DeliveryComponent[];
   turnstileSiteKey?: string | null;
 }
 
@@ -41,6 +43,13 @@ export const getForms = (): { items: DeliveryForm[]; turnstileSiteKey: string | 
   items: snap().forms ?? [],
   turnstileSiteKey: snap().turnstileSiteKey ?? null,
 });
+/**
+ * Component definitions for `component` blocks. MUST be passed to every `<BcmsBlocks>`:
+ * without it the SDK's component map is empty and each placed section renders as null —
+ * a silently blank page that still returns 200, while the dashboard canvas looks correct.
+ */
+export const getComponents = (): DeliveryComponent[] => snap().components ?? [];
+
 export const listEntries = <T>(model: string): SnapshotEntry<T>[] =>
   (snap().collections?.[model] ?? []) as SnapshotEntry<T>[];
 export const getEntry = <T>(model: string, slug: string): SnapshotEntry<T> | undefined =>
