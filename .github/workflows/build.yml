@@ -1,6 +1,6 @@
 name: Build
 
-# Build gate: builds the starter on every PR and on pushes to main. This repo is a
+# Build gate: builds the starter on every PR. This repo is a
 # template people fork, so a broken build here is shipped to every one of them.
 #
 # npm, not bun: package-lock.json is the only lockfile committed here, and it's what
